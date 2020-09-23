@@ -1,0 +1,194 @@
+.index-simple-page {
+
+}
+
+.index-simple-page__brand {
+
+	display: flex;
+  min-height: 2.5em;
+  align-items: center;
+	flex: 1 0 auto;
+	
+	justify-content: space-between;
+
+  padding-left: 1em;
+  // padding-right: 1em;
+
+
+
+	background-color:#f8f9fa !important;
+	box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+	color: black;
+	font-family: 'PT Serif', serif;
+	font-size: 1.25rem;
+	font-weight: bold;
+	z-index: 50;
+
+	position: fixed;
+  left: 0;
+  right: 0; 
+}
+
+.index-simple-page__menu-authors {
+	// transition: all 0.3s ease-in-out;
+
+	background-color: whitesmoke;
+	color: black;
+
+	position: absolute;
+	bottom: 0;
+
+	padding: 0px 0px;
+
+	height: calc(100vh - 53px);
+	width: 100vw ;
+	display: flex;
+	flex-direction: column;
+	justify-content: space-around;
+
+}
+
+.index-simple-page__menu-authors_visible {
+	// height: calc(100vh - 53px);
+	// z-index: 25;
+}
+.index-simple-page__slide {
+	transition: all 0.3s ease-in-out;
+	position: fixed;
+	overflow: hidden;
+	height: 0;
+	top: 53px;
+	left: 0;
+	right: 0; 
+	display:flex;
+	flex-direction: column;
+
+	flex: 1;
+	box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+}
+.index-simple-page__slide_visible {
+	height: calc(100vh - 54px);
+	z-index: 25;
+}
+
+
+.index-simple-page__menu-author {
+	flex: 0;
+	font-size: 1.25rem;
+	box-sizing: border-box;
+	padding-left: 1em;
+	padding-right: 1em;
+
+}
+
+.index-simple-page__menu-author:hover {
+	background-color: rgba(0, 0, 0, 0.137);
+
+}
+
+.index-simple-page__menu-button {
+	flex: 0;
+	font-size: 1.25rem;
+	padding-left: 0.5em;
+	padding-right: 0.5em;
+	display: flex;
+}
+
+.index-simple-page__menu-button_pressed {
+	// background-color: whitesmoke;
+}
+
+/* Defuault styles:
+width: narrow,
+orientation: portrait, 
+update: slow,
+scan: interlace,
+monochrome: 1,
+pointer: coarse, 
+hover: none
+*/
+
+/* Positions the navbar at the bottom for easy thumb access on small devices with portrait orientation */ 
+h1, nav{
+  position: fixed;
+  left: 0;
+  right: 0; 
+}
+
+nav {	box-shadow: 0px -4px 5px 0px rgba(0, 0, 0, 0.123);}
+
+/* Creates large touch areas for finguers (coarse) */
+li a {
+  min-height: 4em;
+}
+
+/* Moves the main area to accomodate fixed header and navbar */
+main {
+  padding: 1em;
+  padding-bottom: 3em;
+  padding-top: 3em;
+}
+
+/* Mobile first: Accomodates the brand name on the left and the navigation on the right and it wraps without the need of width media queries */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Center aligns the brand name */
+h1 {
+  display: flex;
+  min-height: 2.5em;
+  align-items: center;
+  flex: 1 0 auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+/* Flex items to make them streach */
+nav {
+  bottom: 0;
+  display: flex;
+  flex: 1 0 auto;
+}
+
+ul, li, li a {
+ display: flex;
+ flex: 1;
+}
+
+li a {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1em;
+  padding-right: 1em;
+  // border-left: 1px solid black;
+}
+
+li:first-child a {
+  border: none;
+}
+
+
+/* General make up: colors, fonts, etc */
+html, body, .container { box-sizing:  border-box; height: 100vh; }
+body { font-family: sans-serif; line-height: 1.5; }
+ header { 
+	//  background: #393f44; 
+	background-color: white;
+	//  border-top: 4px solid #00a8e1;
+	  color: white; 
+	}
+nav { 
+	// background: #292e34;
+	background-color: white;
+
+}
+h1 { background: #030303; font-weight: bold;  margin: 0; padding: 0}
+ul {margin-block-start: 0; margin-block-end: 0; padding-inline-start: 0;}
+li a { color: #ccc; }
+li a:hover { background: #393f44; color: white }
+h2, p { margin-bottom: 1em; }
+h2 {font-weight: 700; }

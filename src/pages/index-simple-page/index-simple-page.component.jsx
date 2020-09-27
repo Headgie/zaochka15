@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useLayoutEffect, useEffect, Fragment, useRef } from "react";
 
 import block from "bem-cn";
 
@@ -14,11 +14,62 @@ import all from "../../assets/photo/all.png";
 
 import "./index-simple-page.styles.scss";
 
+function CaptureResize(props) {
+	const {captureRef} = props;
+	const [size, setSize] = useState({});
+	const [initialSize, setInitialSize] = useState({});
+	const [initialHeight, setInitialHeight] = useState({});
+  function updateSize() {
+    setSize(captureRef.current.getBoundingClientRect());
+	}
+	function updateInitialSize() {
+		setInitialSize(captureRef.current.getBoundingClientRect());
+		setInitialHeight(captureRef.current.getBoundingClientRect().height);
+	}
+	 useEffect(() => {
+			if(Object.keys(initialSize).length === 0)
+			{
+				console.log("updateInitialSize", initialSize);
+				updateInitialSize() ;
+			};
+		
+		}, [initialHeight] );
+
+  useLayoutEffect(() => {
+		console.log("uslayouteffect", size);
+    updateSize();
+    window.addEventListener("resize", updateSize);
+    return () => 
+      window.removeEventListener("resize", updateSize);
+  }, []);
+
+  return props.children(initialSize,size)
+}
+
+
 const IndexSimplePage = (props) => {
 	const ip = block("index-simple-page");
 	const [showAuthorList, setShowAuthorList] = useState(false);
-
+	const c = useRef(null);
+	const [height, setHeight] = useState();
+	const [initialHeight, setInitialHeight] = useState();
 	return (
+		<Fragment>
+
+			<CaptureResize captureRef={c}>
+			{(initialSize, size) =>{
+				
+				setHeight(size.height);
+				setInitialHeight(initialSize.height);
+				// console.log(size.height);
+				return    (
+				<React.Fragment>
+				<div ref={c} className={ip("height-listener")}></div>
+			</React.Fragment>)}
+		}
+		
+		</CaptureResize>
+
 		<div className="container">
 			<header role="banner" className="bg-light">
 				<div className={ip("brand")}>Зачётная книжка
@@ -29,8 +80,10 @@ const IndexSimplePage = (props) => {
 						}
 					</div>
 				</div>
-				<div className={ip("slide", {visible: showAuthorList})}>
-					<div className={ip("menu-authors")}>
+				<div className={ip("slide", {visible: showAuthorList})} 
+				//style={{minHeight: showAuthorList?height:"0px", maxHeight: showAuthorList?height:"0px"}} 
+				>
+					<div className={ip("menu-authors")} style={{minHeight:`calc( ${height}px - 4rem)`, maxHeight: `calc( ${height}px - 4rem)`}} >
 						<div className={ip("menu-author")}>Елена Борок</div>
 						<div className={ip("menu-author")}> Катерина Корнеенкова</div>
 						<div className={ip("menu-author")}>Дарья Лебедева</div>
@@ -60,15 +113,45 @@ const IndexSimplePage = (props) => {
 					</ul>
 				</nav>
 			</header>
-			<main id="main">
-				<h2>Content goes here</h2>
+			<main className={ip("main")}>
+				<div className={ip("section")} 
+				 style={{minHeight:`calc( ${initialHeight}px - 8rem)`, maxHeight: `calc( ${initialHeight}px - 8rem)`}}
+				
+				>
+					<h2>Content goes here</h2>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
+						deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
+						eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
+						quia exercitationem sint dicta!
+					</p>			
+				</div>
+				<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
+					<h2>Content goes here</h2>
+					<p>
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
+						deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
+						eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
+						quia exercitationem sint dicta!
+					</p>
+				</div>
 
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-					deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-					eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-					quia exercitationem sint dicta!
-				</p>			
+					<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
+					<div className={ip("section-inner")}>
+					
+						<div>Content goes here inner</div>
+						
+							<div>
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
+								deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
+								eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
+								quia exercitationem sint dicta!
+							</div>
+						</div>
+						</div>
+
+		
+					<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
 				<h2>Content goes here</h2>
 
 				<p>
@@ -77,8 +160,20 @@ const IndexSimplePage = (props) => {
 					eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
 					quia exercitationem sint dicta!
 				</p>
+				</div>
+				<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
+				<h2>Content goes here</h2>
+
+				<p>
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
+					deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
+					eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
+					quia exercitationem sint dicta!
+				</p>
+			</div>
 			</main>
 		</div>
+		</Fragment>
 	);
 };
 

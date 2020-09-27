@@ -1,18 +1,34 @@
-.index-simple-page {
 
+@import "../../styles/fonts.scss";
+
+.index-simple-page__height-listener {
+  position: fixed;
+  top: 0px;
+  bottom: 0px;
+  left: 0;
+  right: 0;
+  // margin:1rem;
+  // z-index: -10;
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.index-simple-page__main {
+ /* padding: 1em; */
+	  padding-bottom: 4rem;
+	  padding-top: 4rem;
 }
 
 .index-simple-page__brand {
 
 	display: flex;
-  min-height: 2.5em;
+  min-height: 4rem;
   align-items: center;
 	flex: 1 0 auto;
 	
 	justify-content: space-between;
 
   padding-left: 1em;
-  // padding-right: 1em;
+  /* padding-right: 1em; */
 
 
 
@@ -30,44 +46,48 @@
 }
 
 .index-simple-page__menu-authors {
-	// transition: all 0.3s ease-in-out;
 
+	transition: all 0.25s ease-in-out;
 	background-color: whitesmoke;
 	color: black;
 
-	position: absolute;
+	position: relative;
 	bottom: 0;
-
+  // top: 0;
 	padding: 0px 0px;
 
-	height: calc(100vh - 53px);
+		 // height: calc(-webkit-fill-available - 4rem);
+		//  height: calc(100% - 4rem);
+
 	width: 100vw ;
 	display: flex;
 	flex-direction: column;
 	justify-content: space-around;
-
+	z-index: 175;
+	position: absolute;
+	bottom: 0;
 }
 
-.index-simple-page__menu-authors_visible {
-	// height: calc(100vh - 53px);
-	// z-index: 25;
-}
+
 .index-simple-page__slide {
-	transition: all 0.3s ease-in-out;
+	transition: all 0.4s ease-in-out;
 	position: fixed;
 	overflow: hidden;
 	height: 0;
-	top: 53px;
+	top: 4rem;
 	left: 0;
 	right: 0; 
+	bottom: 0;
 	display:flex;
 	flex-direction: column;
 
 	flex: 1;
 	box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+	background-color: whitesmoke;
 }
 .index-simple-page__slide_visible {
-	height: calc(100vh - 54px);
+	height: calc(100% - 4rem);
+		
 	z-index: 25;
 }
 
@@ -78,7 +98,6 @@
 	box-sizing: border-box;
 	padding-left: 1em;
 	padding-right: 1em;
-
 }
 
 .index-simple-page__menu-author:hover {
@@ -95,7 +114,50 @@
 }
 
 .index-simple-page__menu-button_pressed {
-	// background-color: whitesmoke;
+	 /* background-color: whitesmoke; */
+}
+
+.index-simple-page__section {
+	// min-height: calc(100vh - 8rem);
+	// min-height: calc(fill-available - 8rem);
+	// min-height: calc(-webkit-fill-available - 8rem);
+  // max-height: calc(100vh - 8rem);
+	// max-height: calc(-webkit-fill-available - 8rem);
+
+	transition: all 0.25s ease-in-out;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	// margin: 4rem 0px;
+
+}
+.index-simple-page__section-inner {
+
+ display: flex;
+ flex-direction: column;
+ justify-content: space-between;
+ flex: 1;
+
+}
+
+.index-simple-page__section:nth-child(1) {
+	background-color: rgb(173, 255, 255);
+}
+
+.index-simple-page__section:nth-child(2) {
+	background-color: rgb(173, 181, 255);
+}
+
+.index-simple-page__section:nth-child(3) {
+	background-color: rgb(247, 183, 255);
+}
+
+.index-simple-page__section:nth-child(4) {
+	background-color: rgb(255, 187, 187);
+}
+
+.index-simple-page__section:nth-child(5) {
+	background-color: rgb(255, 224, 177);
 }
 
 /* Defuault styles:
@@ -122,12 +184,7 @@ li a {
   min-height: 4em;
 }
 
-/* Moves the main area to accomodate fixed header and navbar */
-main {
-  padding: 1em;
-  padding-bottom: 3em;
-  padding-top: 3em;
-}
+
 
 /* Mobile first: Accomodates the brand name on the left and the navigation on the right and it wraps without the need of width media queries */
 header {
@@ -164,7 +221,7 @@ li a {
   justify-content: center;
   padding-left: 1em;
   padding-right: 1em;
-  // border-left: 1px solid black;
+
 }
 
 li:first-child a {
@@ -176,14 +233,15 @@ li:first-child a {
 html, body, .container { box-sizing:  border-box; height: 100vh; }
 body { font-family: sans-serif; line-height: 1.5; }
  header { 
-	//  background: #393f44; 
+
 	background-color: white;
-	//  border-top: 4px solid #00a8e1;
+
 	  color: white; 
 	}
 nav { 
-	// background: #292e34;
+
 	background-color: white;
+	min-height: 4rem;
 
 }
 h1 { background: #030303; font-weight: bold;  margin: 0; padding: 0}

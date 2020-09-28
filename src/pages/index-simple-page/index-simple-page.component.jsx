@@ -12,6 +12,8 @@ import close from "../../assets/icons/close.svg";
 import book from "../../assets/photo/book.png";
 import all from "../../assets/photo/all.png";
 
+import cardData from "../../data/cards-poets.json";
+
 import "./index-simple-page.styles.scss";
 
 function CaptureResize(props) {
@@ -126,51 +128,18 @@ const IndexSimplePage = (props) => {
 						quia exercitationem sint dicta!
 					</p>			
 				</div>
-				<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
-					<h2>Content goes here</h2>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-						deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-						eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-						quia exercitationem sint dicta!
-					</p>
-				</div>
 
-					<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
-					<div className={ip("section-inner")}>
-					
-						<div>Content goes here inner</div>
-						
-							<div>
-								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-								deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-								eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-								quia exercitationem sint dicta!
-							</div>
-						</div>
+					{cardData.map((card, index)=>(
+						<div key={card.id} className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
+							<h2>{card.name}</h2>
+							<p>{card.bio}</p>
+							<br/>
+							<h2>{card.caption}</h2>
+							<p>{card.poem.split('\n').map(line => <Fragment>{line}<br/></Fragment>)}</p>
 						</div>
 
-		
-					<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
-				<h2>Content goes here</h2>
-
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-					deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-					eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-					quia exercitationem sint dicta!
-				</p>
-				</div>
-				<div className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
-				<h2>Content goes here</h2>
-
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-					deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-					eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-					quia exercitationem sint dicta!
-				</p>
-			</div>
+						)
+					)}
 			</main>
 		</div>
 		</Fragment>

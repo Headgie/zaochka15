@@ -12,6 +12,10 @@ import close from "../../assets/icons/close.svg";
 import book from "../../assets/photo/book.png";
 import all from "../../assets/photo/all.png";
 
+import photo from "../../assets/photo/photo.js";
+
+import lebedeva from "../../assets/photo/03_lebedeva.jpg";
+
 import cardData from "../../data/cards-poets.json";
 
 import "./index-simple-page.styles.scss";
@@ -55,6 +59,7 @@ const IndexSimplePage = (props) => {
 	const c = useRef(null);
 	const [height, setHeight] = useState();
 	const [initialHeight, setInitialHeight] = useState();
+
 	return (
 		<Fragment>
 
@@ -120,22 +125,54 @@ const IndexSimplePage = (props) => {
 				 style={{minHeight:`calc( ${initialHeight}px - 8rem)`, maxHeight: `calc( ${initialHeight}px - 8rem)`}}
 				
 				>
-					<h2>Content goes here</h2>
-					<p>
-						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consectetur
-						deserunt, suscipit velit itaque vitae necessitatibus, impedit pariatur
-						eos. Pariatur beatae sed repellendus iusto doloribus quidem asperiores
-						quia exercitationem sint dicta!
+					<h2>«Зачетная книжка» </h2>
+					
+				</div>
+				<div className={ip("section")} >
+				<p>
+						Сборник стихов «Зачетная книжка» объединил под одной обложкой произведения людей разного возраста, опыта и профессий, однажды пришедших учиться в Литературный институт им. Горького и оказавшихся на одном курсе. Шесть лет мы спорили, смеялись, слушали лекции, спали на лекциях, обсуждали тексты друг друга на семинарах, дружно жили в общаге, гуляли по летней и зимней Москве, читали стихи Пушкину на бульваре. Несмотря на то, что институт остался за плечами пять лет назад, мы все так же дороги друг другу, собираемся на вечера и читаем новые стихи, радуемся победам личным и творческим. Издание совместного сборника стало логичным и неизбежным продолжением общего студенческого прошлого.
+						
+						В сборнике опубликованы произведения следующих авторов: Елена Борок, Катерина Корнеенкова, Дарья Лебедева, Валерия Ободзинская, Дарья Пиотровская, Павел Пушкарев, Татьяна Скрундзь, Елизавета Станиславская, Валерия Хаддадин, Диана Чуяшева, Варвара Юшманова.
+						
+						
 					</p>			
 				</div>
 
 					{cardData.map((card, index)=>(
-						<div key={card.id} className={ip("section")} style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}>
-							<h2>{card.name}</h2>
-							<p>{card.bio}</p>
-							<br/>
+						<div key={card.id} className={ip("section")}
+						 //style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}
+						 >
+							<p><h2>{card.name}</h2></p>
+							<div className={ip("card-bio-photo")}>
+								<div className={ip("card-photo")}>
+							<img src={
+								photo.find(item => item.name===card.photo).src
+							
+							} alt={card.name}/> 
+							</div>
+							<div className={ip("card-bio")}>
+							<p>
+							{card.bio}
+							</p>
+							</div>
+							</div>
+							<div className={ip("card-poem")}>
+							<p>
+							<div className={ip("poem-caption")}>
 							<h2>{card.caption}</h2>
-							<p>{card.poem.split('\n').map(line => <Fragment>{line}<br/></Fragment>)}</p>
+							</div>
+							{card.epigraph?
+								<p>
+									<div className={ip("poem-epi")}>{card.epigraph}</div>
+									<div className={ip("poem-epi")}>{card.epiauthor}</div>
+								</p>
+								
+								:null}
+							</p>
+								{card.poem.split('#p').map(line => <p>{
+									line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
+								}</p>)}
+								</div>
 						</div>
 
 						)

@@ -15,7 +15,11 @@
    z-index: -10;
   background-color: rgba(255, 255, 255, 0);
 }
-
+.index-simple-page__top-section {
+	width: 100vw;
+	 overflow: hidden;
+	 display: block;
+}
 .index-simple-page__top-section {
 	width: 100vw;
 	position:relative;
@@ -267,12 +271,21 @@ nav {
   flex: 1 0 auto;
 }
 
-ul, li, li a {
+.index-simple-page__menu-authors ul,
+ .index-simple-page__menu-authors li, 
+ .index-simple-page__menu-authors  li a,
+
+ nav ul,
+ nav li, 
+ nav li a 
+
+ {
  display: flex;
  flex: 1;
 }
 
-li a {
+.index-simple-page__menu-authors li a,
+nav li a {
   flex: 1;
   align-items: center;
   justify-content: center;
@@ -281,7 +294,9 @@ li a {
 
 }
 
-li:first-child a {
+.index-simple-page__menu-authors  li:first-child a,
+nav  li:first-child a
+ {
   border: none;
 }
 
@@ -289,7 +304,11 @@ li:first-child a {
 
 /* General make up: colors, fonts, etc */
 html, body, .index-simple-page { box-sizing:  border-box; height: 100vh; }
-body { font-family: sans-serif; line-height: 1.5; }
+body { font-family: sans-serif; line-height: 1.5; 
+
+
+	overscroll-behavior-y: none;
+}
  header { 
 
 	background-color: white;

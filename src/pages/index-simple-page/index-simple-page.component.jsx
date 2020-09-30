@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect, useEffect, Fragment, useRef } from "react";
-
+import { Carousel } from 'react-responsive-carousel';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import block from "bem-cn";
 
 import vk from "../../assets/icons/vk-reproductor.svg";
@@ -10,6 +11,8 @@ import menu from "../../assets/icons/menu.svg";
 import close from "../../assets/icons/close.svg";
 
 import book01 from "../../assets/photo/book01.jpg";
+import book02 from "../../assets/photo/book02.jpg";
+import book03 from "../../assets/photo/book03.jpg";
 import all from "../../assets/photo/all.png";
 
 import photo from "../../assets/photo/photo.js";
@@ -121,6 +124,46 @@ const IndexSimplePage = (props) => {
 				</nav>
 			</header>
 			<main className={ip("main")}>
+			<div className={ip("carousel-section")}
+				 style={
+					 {
+						 minHeight:`calc( ${initialHeight}px - 8rem)`,
+						maxHeight: `calc( ${initialHeight}px - 8rem)`,
+						height: `calc( ${initialHeight}px - 8rem)`,
+					}}			
+			>
+			<Carousel
+			  /*
+    
+    
+    infiniteLoop={false}
+     showIndicators={false}
+    autoPlay={false}
+    swipeable={false}
+    dynamicHeight={false}*/
+    showThumbs={false}
+		showStatus={false}
+		>
+				<div className={ip("top-section")} 
+				 style={
+					 {
+						 minHeight:`calc( ${initialHeight}px - 8rem)`,
+						maxHeight: `calc( ${initialHeight}px - 8rem)`,
+						height: `calc( ${initialHeight}px - 8rem)`
+					}}
+				>
+					<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+				</div>
+				<div className={ip("top-section")} 
+				 style={
+					 {
+						 minHeight:`calc( ${initialHeight}px - 8rem)`,
+						maxHeight: `calc( ${initialHeight}px - 8rem)`,
+						height: `calc( ${initialHeight}px - 8rem)`
+					}}
+				>
+					<img src={book02} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+				</div>
 				<div className={ip("top-section")} 
 				 style={
 					 {
@@ -128,13 +171,13 @@ const IndexSimplePage = (props) => {
 						maxHeight: `calc( ${initialHeight}px - 8rem)`,
 						maxHeight: `calc( ${initialHeight}px - 8rem)`
 					}}
-				
 				>
-					<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-				
-				
+					<img src={book03} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+				</div>				
 
+				</Carousel>
 				</div>
+
 				<div className={ip("section")} >
 				<p>
 						Сборник стихов «Зачетная книжка» объединил под одной обложкой произведения людей разного возраста, опыта и профессий, однажды пришедших учиться в Литературный институт им. Горького и оказавшихся на одном курсе. Шесть лет мы спорили, смеялись, слушали лекции, спали на лекциях, обсуждали тексты друг друга на семинарах, дружно жили в общаге, гуляли по летней и зимней Москве, читали стихи Пушкину на бульваре. Несмотря на то, что институт остался за плечами пять лет назад, мы все так же дороги друг другу, собираемся на вечера и читаем новые стихи, радуемся победам личным и творческим. Издание совместного сборника стало логичным и неизбежным продолжением общего студенческого прошлого.

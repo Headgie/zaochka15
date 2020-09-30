@@ -9,7 +9,7 @@ import cart from "../../assets/icons/cart.svg";
 import menu from "../../assets/icons/menu.svg";
 import close from "../../assets/icons/close.svg";
 
-import book from "../../assets/photo/book.png";
+import book01 from "../../assets/photo/book01.jpg";
 import all from "../../assets/photo/all.png";
 
 import photo from "../../assets/photo/photo.js";
@@ -77,7 +77,7 @@ const IndexSimplePage = (props) => {
 		
 		</CaptureResize>
 
-		<div className="container">
+		<div className={ip({showAuthorList: showAuthorList})}>
 			<header role="banner" className="bg-light">
 				<div className={ip("brand")}>Зачётная книжка
 					<div className={ip("menu-button",{pressed:showAuthorList })} onClick={()=>setShowAuthorList(!showAuthorList)}>
@@ -121,12 +121,19 @@ const IndexSimplePage = (props) => {
 				</nav>
 			</header>
 			<main className={ip("main")}>
-				<div className={ip("section")} 
-				 style={{minHeight:`calc( ${initialHeight}px - 8rem)`, maxHeight: `calc( ${initialHeight}px - 8rem)`}}
+				<div className={ip("top-section")} 
+				 style={
+					 {
+						 minHeight:`calc( ${initialHeight}px - 8rem)`,
+						maxHeight: `calc( ${initialHeight}px - 8rem)`,
+						maxHeight: `calc( ${initialHeight}px - 8rem)`
+					}}
 				
 				>
-					<h2>«Зачетная книжка» </h2>
-					
+					<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+				
+				
+
 				</div>
 				<div className={ip("section")} >
 				<p>

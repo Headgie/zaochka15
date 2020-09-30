@@ -1,6 +1,10 @@
 
 @import "../../styles/fonts.scss";
 
+.index-simple-page_showAuthorList{
+	
+}
+
 .index-simple-page__height-listener {
   position: fixed;
   top: 0px;
@@ -12,11 +16,30 @@
   background-color: rgba(255, 255, 255, 0);
 }
 
+.index-simple-page__top-section {
+	width: 100vw;
+	position:relative;
+	// border:1px dashed red;
+	display:flex;
+	justify-content:center;
+	align-items:center;
+	overflow:hidden
+}
+
+.index-simple-page__image {
+	flex-shrink:0;
+	min-width:100%;
+	min-height:100%
+}
+
+
 .index-simple-page__main {
  /* padding: 1em; */
 	  padding-bottom: 4rem;
 	  padding-top: 4rem;
 }
+
+
 
 .index-simple-page__brand {
 
@@ -109,7 +132,7 @@
 	flex: 0;
 	font-size: 1.25rem;
 	padding-left: 0.5em;
-	padding-right: 0.5em;
+	padding-right: 1.5em;
 	display: flex;
 }
 
@@ -263,8 +286,9 @@ li:first-child a {
 }
 
 
+
 /* General make up: colors, fonts, etc */
-html, body, .container { box-sizing:  border-box; height: 100vh; }
+html, body, .index-simple-page { box-sizing:  border-box; height: 100vh; }
 body { font-family: sans-serif; line-height: 1.5; }
  header { 
 

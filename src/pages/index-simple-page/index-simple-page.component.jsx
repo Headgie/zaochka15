@@ -55,6 +55,7 @@ function CaptureResize(props) {
   return props.children(initialSize,size)
 }
 
+const scrollToRef = (ref) => window.scrollTo(0, ref.current.offsetTop-64)  
 
 const IndexSimplePage = (props) => {
 	const ip = block("index-simple-page");
@@ -62,6 +63,32 @@ const IndexSimplePage = (props) => {
 	const c = useRef(null);
 	const [height, setHeight] = useState();
 	const [initialHeight, setInitialHeight] = useState();
+	const buyRef = useRef(null);
+	const recieveRef = useRef(null);
+	const recieveRfPostRef = useRef(null);
+	const [hard, setHard] = useState(false);
+	const [soft, setSoft] = useState(false);
+	const [recieve, setRecieve] = useState("self");
+	const [recieveStyle, setRecieveStyle] = useState({height: "0px"});
+	const [recieveInnerHeight, setRecieveInnerHeight] = useState(0);
+	const [recieveRfPostHeight, setRecieveRfPostHeight] = useState(0);
+
+	const [index, setIndex] = useState("");
+	const [city, setCity] = useState("");
+	const [address, setAddress] = useState("");
+	const [fio, setFio] = useState("");
+	const [count, setCount] = useState(1);
+
+	 useEffect(() => {
+		 console.log(recieveInnerHeight);
+		setRecieveStyle({height: `${recieveInnerHeight}px`})
+	 }, [recieveInnerHeight]);
+	 
+	 useEffect(() => {
+		 console.log(recieveInnerHeight);
+		setRecieveStyle({height: `${recieveInnerHeight}px`})
+	 }, [recieveInnerHeight]);
+  
 
 	return (
 		<Fragment>
@@ -118,7 +145,7 @@ const IndexSimplePage = (props) => {
 							<a href="/products"><img src={email}  width="30"  height="30" alt="Email" /></a>
 						</li>
 						<li>
-							<a href="/login"><img src={cart}  width="30"  height="30" alt="Buy" /></a>
+							<div className={ip("navbar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cart}  width="30"  height="30" alt="Buy" /></div>
 						</li>
 					</ul>
 				</nav>
@@ -227,6 +254,59 @@ const IndexSimplePage = (props) => {
 
 						)
 					)}
+				<div ref={buyRef} className={ip("section")} >
+						<span  className={ip("h1")}>Заказать книгу </span>
+						<label className={ip("h2")}>
+							<input type="checkbox" className={ip("checkbox")} checked={hard} 
+							onChange={()=>{setHard(!hard);
+								setRecieveInnerHeight	(hard?0:recieveRef.current.clientHeight);
+							}}/>
+							Печатная книга в тевердом переплете 
+						</label>
+						<div className={ip("comment")}>
+							Зачетная книжка – М.: Стеклограф, 2020. <br/>
+							Размеры: 135х196х14 мм, 184 с.<br/>
+							ISBN 978-5-4465-2677-2<br/>
+						</div>
+						<div className={ip("price")}>{recieve==="self"?`500₽`:`400₽ + пересылка`}</div>
+						<div className={ip("recieve")} style={recieveStyle}>
+							<div ref={recieveRef}  className={ip("recieve-inner")}>
+							<label  className={ip("h2")}>
+								<input type="radio" name="group" className={ip("checkbox")} value="self" 
+									checked={recieve==="self"} onChange={e => {
+											setRecieve(e.target.value) 
+									}}/>
+									Самовывоз
+							</label>
+							<div className={ip("comment")}>
+								Москва, м. Достоевская
+							</div>
+							<label  className={ip("h2")}>
+								<input type="radio" name="grop" className={ip("checkbox")} value="rfPost"  
+									checked={recieve==="rfPost"} onChange={e => setRecieve(e.target.value) }/>
+									Доставка почтой России
+
+									
+
+							</label>	
+							<div className={ip("comment")}>
+								При выборе этого варианта заказчик оплачивает почтовые расходы, но получает скидку на книгу в размере 100 рублей. Оплата наложенным платежом при получении на почте. 
+							</div>									
+							<label ></label>													
+							</div>
+						</div>
+						
+						<label  className={ip("h2")}>
+							<input type="checkbox" className={ip("checkbox")}  checked={soft} onChange={()=>{setSoft(!soft)} }/>
+							Электронная книга в форматах fb2, epub
+						</label>
+						<div className={ip("comment")}>
+							Подходит для большинства программ для чтения электронных книг, таких как iBooks, iBouquiniste, Читай! Litres, Bookmate, ALReader, PocketBook Reader, FBReader и др. 
+						</div>
+						<div className={ip("price")}>300₽</div>
+
+
+				</div>
 			</main>
 		</div>
 		</Fragment>

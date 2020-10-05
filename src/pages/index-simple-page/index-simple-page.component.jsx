@@ -3,12 +3,12 @@ import { Carousel } from 'react-responsive-carousel';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import block from "bem-cn";
 
-import vk from "../../assets/icons/vk-reproductor.svg";
-import fb from "../../assets/icons/facebook.svg";
-import email from "../../assets/icons/email.svg";
-import cart from "../../assets/icons/cart.svg";
-import menu from "../../assets/icons/menu.svg";
-import close from "../../assets/icons/close.svg";
+import vkIcon from "../../assets/icons/vk-reproductor.svg";
+import fbIcon from "../../assets/icons/facebook.svg";
+import emailIcon from "../../assets/icons/email.svg";
+import cartIcon from "../../assets/icons/cart.svg";
+import menuIcon from "../../assets/icons/menu.svg";
+import closeIcon from "../../assets/icons/close.svg";
 
 import book01 from "../../assets/photo/book01.jpg";
 import book02 from "../../assets/photo/book02.jpg";
@@ -20,6 +20,9 @@ import photo from "../../assets/photo/photo.js";
 import lebedeva from "../../assets/photo/03_lebedeva.jpg";
 
 import cardData from "../../data/cards-poets.json";
+
+import ExpandSection from "../../components/expand-section/expand-section.component";
+import Counter from "../../components/counter/counter.component";
 
 import "./index-simple-page.styles.scss";
 
@@ -71,7 +74,6 @@ const IndexSimplePage = (props) => {
 	const [recieve, setRecieve] = useState("self");
 	const [recieveStyle, setRecieveStyle] = useState({height: "0px"});
 	const [recieveInnerHeight, setRecieveInnerHeight] = useState(0);
-	const [recieveRfPostHeight, setRecieveRfPostHeight] = useState(0);
 
 	const [index, setIndex] = useState("");
 	const [city, setCity] = useState("");
@@ -79,16 +81,10 @@ const IndexSimplePage = (props) => {
 	const [fio, setFio] = useState("");
 	const [count, setCount] = useState(1);
 
-	 useEffect(() => {
-		 console.log(recieveInnerHeight);
-		setRecieveStyle({height: `${recieveInnerHeight}px`})
-	 }, [recieveInnerHeight]);
-	 
-	 useEffect(() => {
-		 console.log(recieveInnerHeight);
-		setRecieveStyle({height: `${recieveInnerHeight}px`})
-	 }, [recieveInnerHeight]);
-  
+	const [userName, setUserName] = useState("");
+	const [email, setEmail] = useState("");
+	const [phone, setPhone] = useState("");
+	const [comment, setComment] = useState("");
 
 	return (
 		<Fragment>
@@ -112,8 +108,8 @@ const IndexSimplePage = (props) => {
 				<div className={ip("brand")}>Зачётная книжка
 					<div className={ip("menu-button",{pressed:showAuthorList })} onClick={()=>setShowAuthorList(!showAuthorList)}>
 						{showAuthorList?
-							<img src={close} width="26"  height="26" alt="Close"  /> :
-							<img src={menu} width="28"  height="28" alt="Menu"  />
+							<img src={closeIcon} width="26"  height="26" alt="Close"  /> :
+							<img src={menuIcon} width="28"  height="28" alt="Menu"  />
 						}
 					</div>
 				</div>
@@ -136,73 +132,70 @@ const IndexSimplePage = (props) => {
 				<nav>
 					<ul>
 						<li>
-							<a href="#main"><img src={vk} width="28"  height="28" alt="VK"  /></a>
+							<a href="#main"><img src={vkIcon} width="28"  height="28" alt="VK"  /></a>
 						</li>
 						<li>
-							<a href="/about"><img src={fb}  width="30"  height="30"  alt="FB" /></a>
+							<a href="/about"><img src={fbIcon}  width="30"  height="30"  alt="FB" /></a>
 						</li>
 						<li>
-							<a href="/products"><img src={email}  width="30"  height="30" alt="Email" /></a>
+							<a href="/products"><img src={emailIcon}  width="30"  height="30" alt="Email" /></a>
 						</li>
 						<li>
-							<div className={ip("navbar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cart}  width="30"  height="30" alt="Buy" /></div>
+							<div className={ip("navbar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
 						</li>
 					</ul>
 				</nav>
 			</header>
 			<main className={ip("main")}>
-			<div className={ip("carousel-section")}
-				 style={
-					 {
-						 minHeight:`calc( ${initialHeight}px - 8rem)`,
-						maxHeight: `calc( ${initialHeight}px - 8rem)`,
-						height: `calc( ${initialHeight}px - 8rem)`,
-					}}			
-			>
-			<Carousel
-			  /*
-    
-    
-    infiniteLoop={false}
-     showIndicators={false}
-    autoPlay={false}
-    swipeable={false}
-    dynamicHeight={false}*/
-    showThumbs={false}
-		showStatus={false}
-		>
-				<div className={ip("top-section")} 
-				 style={
-					 {
-						 minHeight:`calc( ${initialHeight}px - 8rem)`,
-						maxHeight: `calc( ${initialHeight}px - 8rem)`,
-						height: `calc( ${initialHeight}px - 8rem)`
-					}}
-				>
-					<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-				</div>
-				<div className={ip("top-section")} 
-				 style={
-					 {
-						 minHeight:`calc( ${initialHeight}px - 8rem)`,
-						maxHeight: `calc( ${initialHeight}px - 8rem)`,
-						height: `calc( ${initialHeight}px - 8rem)`
-					}}
-				>
-					<img src={book02} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-				</div>
-				<div className={ip("top-section")} 
-				 style={
-					 {
-						 minHeight:`calc( ${initialHeight}px - 8rem)`,
-						maxHeight: `calc( ${initialHeight}px - 8rem)`,
-						maxHeight: `calc( ${initialHeight}px - 8rem)`
-					}}
-				>
-					<img src={book03} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-				</div>				
-
-				</Carousel>
+				<div className={ip("carousel-section")}
+					style={
+						{
+							minHeight:`calc( ${initialHeight}px - 8rem)`,
+							maxHeight: `calc( ${initialHeight}px - 8rem)`,
+							height: `calc( ${initialHeight}px - 8rem)`,
+						}}			
+					>
+					<Carousel
+						/*
+					infiniteLoop={false}
+					showIndicators={false}
+					autoPlay={false}
+					swipeable={false}
+					dynamicHeight={false}*/
+					showThumbs={false}
+					showStatus={false}
+					>
+						<div className={ip("top-section")} 
+							style={
+								{
+									minHeight:`calc( ${initialHeight}px - 8rem)`,
+									maxHeight: `calc( ${initialHeight}px - 8rem)`,
+									height: `calc( ${initialHeight}px - 8rem)`
+								}
+							}	>
+							<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+						</div>
+						<div className={ip("top-section")} 
+						style={
+							{
+								minHeight:`calc( ${initialHeight}px - 8rem)`,
+								maxHeight: `calc( ${initialHeight}px - 8rem)`,
+								height: `calc( ${initialHeight}px - 8rem)`
+							}}
+						>
+							<img src={book02} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+						</div>
+						<div className={ip("top-section")} 
+						style={
+							{
+								minHeight:`calc( ${initialHeight}px - 8rem)`,
+								maxHeight: `calc( ${initialHeight}px - 8rem)`,
+								maxHeight: `calc( ${initialHeight}px - 8rem)`
+							}}
+						>
+							<img src={book03} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
+						</div>				
+					</Carousel>
 				</div>
 
 				<div className={ip("section")} >
@@ -215,52 +208,53 @@ const IndexSimplePage = (props) => {
 					</p>			
 				</div>
 
-					{cardData.map((card, index)=>(
-						<div key={card.id} className={ip("section")}
-						 //style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}
-						 >
-							<p><h2>{card.name}</h2></p>
-							<div className={ip("card-bio-photo")}>
-								<div className={ip("card-photo")}>
+				{cardData.map((card, index)=>(
+					<div key={card.id} className={ip("section")}
+						//style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}
+						>
+						<p><h2>{card.name}</h2></p>
+						<div className={ip("card-bio-photo")}>
+							<div className={ip("card-photo")}>
 							<img src={
 								photo.find(item => item.name===card.photo).src
 							
 							} alt={card.name}/> 
 							</div>
 							<div className={ip("card-bio")}>
-							<p>
-							{card.bio}
-							</p>
-							</div>
-							</div>
-							<div className={ip("card-poem")}>
-							<p>
-							<div className={ip("poem-caption")}>
-							<h2>{card.caption}</h2>
-							</div>
-							{card.epigraph?
 								<p>
-									<div className={ip("poem-epi")}>{card.epigraph}</div>
-									<div className={ip("poem-epi")}>{card.epiauthor}</div>
+									{card.bio}
 								</p>
-								
-								:null}
-							</p>
-								{card.poem.split('#p').map(line => <p>{
-									line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
-								}</p>)}
-								</div>
+							</div>
 						</div>
 
-						)
-					)}
+						<div className={ip("card-poem")}>
+							<p>
+								<div className={ip("poem-caption")}>
+									<h2>{card.caption}</h2>
+								</div>
+								{card.epigraph?
+									<p>
+										<div className={ip("poem-epi")}>{card.epigraph}</div>
+										<div className={ip("poem-epi")}>{card.epiauthor}</div>
+									</p>
+									:null}
+							</p>
+							{card.poem.split('#p').map(line => 
+								<p>{
+								line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
+								}</p>
+								)
+							}
+						</div>
+					</div>
+
+					))
+				}
 				<div ref={buyRef} className={ip("section")} >
 						<span  className={ip("h1")}>Заказать книгу </span>
 						<label className={ip("h2")}>
 							<input type="checkbox" className={ip("checkbox")} checked={hard} 
-							onChange={()=>{setHard(!hard);
-								setRecieveInnerHeight	(hard?0:recieveRef.current.clientHeight);
-							}}/>
+							onChange={()=>{setHard(!hard)}}/>
 							Печатная книга в тевердом переплете 
 						</label>
 						<div className={ip("comment")}>
@@ -268,9 +262,8 @@ const IndexSimplePage = (props) => {
 							Размеры: 135х196х14 мм, 184 с.<br/>
 							ISBN 978-5-4465-2677-2<br/>
 						</div>
-						<div className={ip("price")}>{recieve==="self"?`500₽`:`400₽ + пересылка`}</div>
-						<div className={ip("recieve")} style={recieveStyle}>
-							<div ref={recieveRef}  className={ip("recieve-inner")}>
+						<div className={ip("price")}>500₽</div>
+						<ExpandSection visible={hard  }>
 							<label  className={ip("h2")}>
 								<input type="radio" name="group" className={ip("checkbox")} value="self" 
 									checked={recieve==="self"} onChange={e => {
@@ -283,19 +276,38 @@ const IndexSimplePage = (props) => {
 							</div>
 							<label  className={ip("h2")}>
 								<input type="radio" name="grop" className={ip("checkbox")} value="rfPost"  
-									checked={recieve==="rfPost"} onChange={e => setRecieve(e.target.value) }/>
-									Доставка почтой России
-
-									
-
+								checked={recieve==="rfPost"} onChange={e => setRecieve(e.target.value) }/>
+								Доставка почтой России
 							</label>	
 							<div className={ip("comment")}>
 								При выборе этого варианта заказчик оплачивает почтовые расходы, но получает скидку на книгу в размере 100 рублей. Оплата наложенным платежом при получении на почте. 
-							</div>									
-							<label ></label>													
-							</div>
-						</div>
+							</div>	
+						</ExpandSection>
 						
+						<ExpandSection visible={hard && recieve==="rfPost" }>
+						<div className={ip("send-rf-data")}>
+							<label className={ip("send-rf-data-label")}>
+								Индекс</label>
+								<input type="text" name="name" value={index} onChange={e=>setIndex(e.target.value)} />
+							
+							<label className={ip("send-rf-data-label")}>
+								Населенный пункт</label>
+								<input type="text" name="name" value={city} onChange={e=>setCity(e.target.value)} />
+							
+							<label className={ip("send-rf-data-label")}>
+								Адрес
+								(улица, дом, квартира)</label>		
+								<input type="text" name="name" value={address} onChange={e=>setAddress(e.target.value)} />
+												
+							<label className={ip("send-rf-data-label")}>
+								ФИО получателя	</label>	
+								<input type="text" name="name" value={fio} onChange={e=>setFio(e.target.value)} />
+						
+							<label className={ip("send-rf-data-label")}>
+								Количество книг в заказе</label>
+								<Counter value={count} onChange={setCount }/>
+							</div>															
+						</ExpandSection>
 						<label  className={ip("h2")}>
 							<input type="checkbox" className={ip("checkbox")}  checked={soft} onChange={()=>{setSoft(!soft)} }/>
 							Электронная книга в форматах fb2, epub
@@ -304,7 +316,25 @@ const IndexSimplePage = (props) => {
 							Подходит для большинства программ для чтения электронных книг, таких как iBooks, iBouquiniste, Читай! Litres, Bookmate, ALReader, PocketBook Reader, FBReader и др. 
 						</div>
 						<div className={ip("price")}>300₽</div>
+						<ExpandSection visible={hard || soft }>
+							<div className={ip("send-rf-data")}>
+								<label className={ip("send-rf-data-label")}>
+									Ваше имя</label>
+									<input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} />
+								<label className={ip("send-rf-data-label")}>
+									E-mail</label>
+									<input type="text" name="email" value={email} onChange={e=>setEmail(e.target.value)} />
 
+								<label className={ip("send-rf-data-label")}>
+									Номер телефона</label>
+									<input type="text" name="phone" value={phone} onChange={e=>setPhone(e.target.value)} />
+
+								<label className={ip("send-rf-data-label")}>
+									Комментарий</label>
+									<textarea className={ip("send-comment")} value={comment} onChange={e=>setComment(e.target.value)} />
+								<button className={ip("send-submit")}>Оформить заказ</button>					
+							</div>	
+						</ExpandSection>
 
 				</div>
 			</main>

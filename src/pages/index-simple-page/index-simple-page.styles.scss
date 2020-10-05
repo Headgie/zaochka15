@@ -349,15 +349,33 @@ nav  li:first-child a
 	margin-left: 0px;
 	margin-right: 1rem;
 }
-.index-simple-page__recieve{
-	overflow: hidden;
-	transition: height 0.25s ease-in-out;
-}
 
-.index-simple-page__recieve-inner{
-	padding-left: 1rem;
+.index-simple-page__send-rf-data {
 	display: flex;
 	flex-direction: column;
+}
+
+.index-simple-page__send-rf-data-label {
+	font-size: 1.1rem;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-align: left;
+} 
+
+.index-simple-page__send-comment {
+	height: 4.5rem;
+	resize: none;
+	margin-bottom: 1rem;
+	font-family:  sans-serif;
+	font-size: 1rem;
+
+}
+.index-simple-page__send-submit {
+	height: 2rem;
+	resize: none;
+	font-size: 1.1rem;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-align: center;
+
 }
 
 /* General make up: colors, fonts, etc */

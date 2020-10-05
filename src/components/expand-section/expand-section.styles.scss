@@ -1,0 +1,10 @@
+.expand-section__recieve{
+	overflow: hidden;
+	transition: height 0.25s ease-in-out;
+}
+
+.expand-section__recieve-inner{
+	padding-left: 1rem;
+	display: flex;
+	flex-direction: column;
+}

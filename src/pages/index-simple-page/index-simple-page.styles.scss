@@ -204,7 +204,9 @@
 .index-simple-page__card-bio-photo {
 	flex-wrap: wrap;
 }
-
+.index-simple-page__card-photo {
+	overflow: hidden;
+}
 .index-simple-page__section img {
 	
 	width: calc(100vw - 2.1rem);
@@ -275,7 +277,9 @@ h1, nav{
   right: 0; 
 }
 
-nav {	box-shadow: 0px -4px 5px 0px rgba(0, 0, 0, 0.123);}
+nav {	box-shadow: 0px -4px 5px 0px rgba(0, 0, 0, 0.123);
+z-index: 20;
+}
 
 /* Creates large touch areas for finguers (coarse) */
 li a {

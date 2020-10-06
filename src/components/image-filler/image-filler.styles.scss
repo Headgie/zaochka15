@@ -1,0 +1,13 @@
+.image-filler__image-container {
+  background-color: blueviolet;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  // margin: 1px;
+}
+
+.image-filler__image-fit{
+  align-self: center;
+  justify-self: center;
+}

@@ -10,9 +10,9 @@ import cartIcon from "../../assets/icons/cart.svg";
 import menuIcon from "../../assets/icons/menu.svg";
 import closeIcon from "../../assets/icons/close.svg";
 
-import book01 from "../../assets/photo/book01.jpg";
-import book02 from "../../assets/photo/book02.jpg";
-import book03 from "../../assets/photo/book03.jpg";
+import book01 from "../../assets/photo/book01_resize.jpg";
+import book02 from "../../assets/photo/book02_resize.jpg";
+import book03 from "../../assets/photo/book03_resize.jpg";
 import all from "../../assets/photo/all.png";
 
 import photo from "../../assets/photo/photo.js";
@@ -23,6 +23,7 @@ import cardData from "../../data/cards-poets.js";
 
 import ExpandSection from "../../components/expand-section/expand-section.component";
 import Counter from "../../components/counter/counter.component";
+import ImageFiller from "../../components/image-filler/image-filler.component";
 
 import "./index-simple-page.styles.scss";
 
@@ -65,7 +66,9 @@ const IndexSimplePage = (props) => {
 	const [showAuthorList, setShowAuthorList] = useState(false);
 	const c = useRef(null);
 	const [height, setHeight] = useState();
+	const [width, setWidth] = useState();
 	const [initialHeight, setInitialHeight] = useState();
+	const [initialWidth, setInitialWidth] = useState();
 	const buyRef = useRef(null);
 	const recieveRef = useRef(null);
 	const recieveRfPostRef = useRef(null);
@@ -94,7 +97,10 @@ const IndexSimplePage = (props) => {
 			{(initialSize, size) =>{
 				
 				setHeight(size.height);
+				setWidth(size.width);
 				setInitialHeight(initialSize.height);
+				setInitialWidth(initialSize.width);
+
 				// console.log(size.height);
 				return    (
 				<React.Fragment>
@@ -158,9 +164,6 @@ const IndexSimplePage = (props) => {
 							<a href="/about"><img src={fbIcon}  width="30"  height="30"  alt="FB" /></a>
 						</li>
 						<li>
-							<a href="/products"><img src={emailIcon}  width="30"  height="30" alt="Email" /></a>
-						</li>
-						<li>
 							<div className={ip("navbar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
 						</li>
 					</ul>
@@ -170,9 +173,9 @@ const IndexSimplePage = (props) => {
 				<div className={ip("carousel-section")}
 					style={
 						{
-							minHeight:`calc( ${initialHeight}px - 8rem)`,
-							maxHeight: `calc( ${initialHeight}px - 8rem)`,
-							height: `calc( ${initialHeight}px - 8rem)`,
+							minHeight:`${height-128}px`,
+							maxHeight:`${height-128}px`,
+							height: `${height-128}px`,
 						}}			
 					>
 					<Carousel
@@ -182,39 +185,21 @@ const IndexSimplePage = (props) => {
 					autoPlay={false}
 					swipeable={false}
 					dynamicHeight={false}*/
+					
+					autoPlay={true}
+					infiniteLoop={true}
 					showThumbs={false}
 					showStatus={false}
 					>
-						<div className={ip("top-section")} 
-							style={
-								{
-									minHeight:`calc( ${initialHeight}px - 8rem)`,
-									maxHeight: `calc( ${initialHeight}px - 8rem)`,
-									height: `calc( ${initialHeight}px - 8rem)`
-								}
-							}	>
-							<img src={book01} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-						</div>
-						<div className={ip("top-section")} 
-						style={
-							{
-								minHeight:`calc( ${initialHeight}px - 8rem)`,
-								maxHeight: `calc( ${initialHeight}px - 8rem)`,
-								height: `calc( ${initialHeight}px - 8rem)`
-							}}
-						>
-							<img src={book02} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-						</div>
-						<div className={ip("top-section")} 
-						style={
-							{
-								minHeight:`calc( ${initialHeight}px - 8rem)`,
-								maxHeight: `calc( ${initialHeight}px - 8rem)`,
-								maxHeight: `calc( ${initialHeight}px - 8rem)`
-							}}
-						>
-							<img src={book03} alt="Close" className={ip("image")} style={{height:`calc( ${initialHeight}px - 8rem)`}} /> 
-						</div>				
+						<ImageFiller 
+						image={book01} imageHeight={667} imageWidth={1000}
+						containerHeight={height-128} containerWidth={width} />
+						<ImageFiller 
+						image={book02} imageHeight={750} imageWidth={1000}
+						containerHeight={height-128} containerWidth={width} />
+						<ImageFiller 
+						image={book03} imageHeight={750} imageWidth={1000}
+						containerHeight={height-128} containerWidth={width} />								
 					</Carousel>
 				</div>
 

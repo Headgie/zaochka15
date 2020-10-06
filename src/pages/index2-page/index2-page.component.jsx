@@ -10,9 +10,12 @@ import menu from "../../assets/icons/menu.svg";
 import close from "../../assets/icons/close.svg";
 
 import book from "../../assets/photo/book.png";
+import book01 from "../../assets/photo/book01.jpg";
 import all from "../../assets/photo/all.png";
 
 import "./index2-page.styles.scss";
+
+import ImageFiller from "../../components/image-filler/image-filler.component";
 
 function CaptureResize(props) {
   const {captureRef} = props;
@@ -36,16 +39,20 @@ const Index2Page = (props) => {
   const [showAuthorList, setShowAuthorList] = useState(false);
   const c = useRef(null);
   const [height, setHeight] = useState();
+  const [width, setWidth] = useState();
 	return (
     <Fragment>
     <CaptureResize captureRef={c}>
       {(size) =>{
         
         setHeight(size.height);
+        setWidth(size.width);
         // console.log(size.height);
         return    (
         <React.Fragment>
-        <div ref={c} className={ip("height-listener")}>{size.height}</div>
+        <div ref={c} className={ip("height-listener")}>
+         {`  ${size.height}x${size.width} ${4032/3024} ${size.width/size.height} `} 
+        </div>
       </React.Fragment>)}
     }
     
@@ -53,8 +60,27 @@ const Index2Page = (props) => {
     <div className={ip()}>
       <div className={ip("scroll")}>
         <div className={ip("container")}>
-          <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>dsljdkgf</div>
-          <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>dgdre </div>
+          <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>
+            <ImageFiller 
+              image={book01} imageHeight={3024} imageWidth={4032}
+              containerHeight={height} containerWidth={width} />
+          </div>        
+          <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>
+            <div className={ip("image-container")} style={{
+              width: `${width}px`,
+              height: `${height }px`,
+          }}>
+              <img className={ip("image-fit")} src={book01} alt="Close"  
+                style={{
+                  width: `${(width/height)<(4032/3024)? height*(4032/3024):width  }px`,
+                  height: `${(width/height)<(4032/3024)? height: width/(4032/3024) }px`,
+              }}/> 
+              </div>
+          </div>
+          <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>
+          
+          
+          </div>
           <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>234</div>
           <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>qweqweqwe</div>
           <div className={ip("section")} style={{minHeight: height, maxHeight: height}}>hjkhjkhk</div>

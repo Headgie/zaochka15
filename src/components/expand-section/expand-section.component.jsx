@@ -20,7 +20,7 @@ const ExpandSection = (props) => {
   return (
 
     <div className={es("recieve")} style={recieveStyle}>
-      <div ref={recieveRef}  className={es("recieve-inner")}>
+      <div ref={recieveRef}  className={es("recieve-inner",{noPaddingBottom: props.noPaddingBottom})}>
         {props.children}
       </div>
     </div>

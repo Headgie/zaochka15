@@ -74,6 +74,7 @@ const IndexSimplePage = (props) => {
 	const [recieve, setRecieve] = useState("self");
 	const [recieveStyle, setRecieveStyle] = useState({height: "0px"});
 	const [recieveInnerHeight, setRecieveInnerHeight] = useState(0);
+  const [showModal, setShowModal] = useState(false)
 
 	const [index, setIndex] = useState("");
 	const [city, setCity] = useState("");
@@ -102,7 +103,24 @@ const IndexSimplePage = (props) => {
 		}
 		
 		</CaptureResize>
-
+		<div className={ip("modal-dialog", {visible: showModal})} 
+			style={showModal?{height:`${height}px`}:{height:`0px`}} >
+			<div className={ip("modal-dialog-content")}
+			style={{minHeight:`calc( ${height}px - 0rem)`, maxHeight: `calc( ${height}px - 0rem)`}}>
+			<p>
+			{`Спасибо, ${userName}!
+			Вы заказали "Зачетную книжку": ${hard?`печатную (${count} экз)`:``} ${hard && soft?` и `: ``} ${soft?`электронную`:``}.
+			
+			Адрес почтовой доставки: 111123, Якутск, ул. Ивановская, д.5, кв. 15
+			ФИО получателя: Иванов Иван Иванович
+			
+			Ожидайте письма на указанный e-mail: user@domen.ru 
+			Если у вас возникли вопросы или письмо долго не приходит, обращайтесь: `}
+			</p>
+			<button className={ip("button")} onClick={()=>setShowModal(false)}>OK</button>
+			</div>
+			
+		</div>
 		<div className={ip({showAuthorList: showAuthorList})}>
 			<header role="banner" className="bg-light">
 				<div className={ip("brand")}>Зачётная книжка
@@ -132,7 +150,9 @@ const IndexSimplePage = (props) => {
 				<nav>
 					<ul>
 						<li>
-							<a href="#main"><img src={vkIcon} width="28"  height="28" alt="VK"  /></a>
+							<div className={ip("navbar-button")}>
+								<img src={vkIcon} width="28"  height="28" alt="VK"  />
+							</div>
 						</li>
 						<li>
 							<a href="/about"><img src={fbIcon}  width="30"  height="30"  alt="FB" /></a>
@@ -255,7 +275,7 @@ const IndexSimplePage = (props) => {
 						<label className={ip("h2")}>
 							<input type="checkbox" className={ip("checkbox")} checked={hard} 
 							onChange={()=>{setHard(!hard)}}/>
-							Печатная книга в тевердом переплете 
+							Печатная книга в твердом переплете 
 						</label>
 						<div className={ip("comment")}>
 							Зачетная книжка – М.: Стеклограф, 2020. <br/>
@@ -284,8 +304,39 @@ const IndexSimplePage = (props) => {
 							</div>	
 						</ExpandSection>
 						
+						
+						<label  className={ip("h2")}>
+							<input type="checkbox" className={ip("checkbox")}  checked={soft} onChange={()=>{setSoft(!soft)} }/>
+							Электронная книга в форматах fb2, epub
+						</label>
+						<div className={ip("comment")}>
+							Подходит для большинства программ для чтения электронных книг, таких как iBooks, iBouquiniste, Читай! Litres, Bookmate, ALReader, PocketBook Reader, FBReader и др. 
+						</div>
+						<div className={ip("price")}>300₽</div>
+						<ExpandSection visible={hard || soft }>
+							<div className={ip("send-rf-data")}>
+								<label className={ip("send-rf-data-label")}>
+									Ваше имя</label>
+									<input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
+										/>
+								<label className={ip("send-rf-data-label")}>
+									E-mail</label>
+									<input type="text" name="email" value={email} onChange={e=>setEmail(e.target.value)} />
+
+								<label className={ip("send-rf-data-label")}>
+									Номер телефона</label>
+									<input type="text" name="phone" value={phone} onChange={e=>setPhone(e.target.value)} />
+
+								<label className={ip("send-rf-data-label")}>
+									Комментарий</label>
+									<textarea className={ip("send-comment")} value={comment} onChange={e=>setComment(e.target.value)} />
+
+							</div>	
+						</ExpandSection>
 						<ExpandSection visible={hard && recieve==="rfPost" }>
 						<div className={ip("send-rf-data")}>
+							<div className={ip("h2")}>Данные для получения посылки </div>
+
 							<label className={ip("send-rf-data-label")}>
 								Индекс</label>
 								<input type="text" name="name" value={index} onChange={e=>setIndex(e.target.value)} />
@@ -308,34 +359,9 @@ const IndexSimplePage = (props) => {
 								<Counter value={count} onChange={setCount }/>
 							</div>															
 						</ExpandSection>
-						<label  className={ip("h2")}>
-							<input type="checkbox" className={ip("checkbox")}  checked={soft} onChange={()=>{setSoft(!soft)} }/>
-							Электронная книга в форматах fb2, epub
-						</label>
-						<div className={ip("comment")}>
-							Подходит для большинства программ для чтения электронных книг, таких как iBooks, iBouquiniste, Читай! Litres, Bookmate, ALReader, PocketBook Reader, FBReader и др. 
-						</div>
-						<div className={ip("price")}>300₽</div>
-						<ExpandSection visible={hard || soft }>
-							<div className={ip("send-rf-data")}>
-								<label className={ip("send-rf-data-label")}>
-									Ваше имя</label>
-									<input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} />
-								<label className={ip("send-rf-data-label")}>
-									E-mail</label>
-									<input type="text" name="email" value={email} onChange={e=>setEmail(e.target.value)} />
-
-								<label className={ip("send-rf-data-label")}>
-									Номер телефона</label>
-									<input type="text" name="phone" value={phone} onChange={e=>setPhone(e.target.value)} />
-
-								<label className={ip("send-rf-data-label")}>
-									Комментарий</label>
-									<textarea className={ip("send-comment")} value={comment} onChange={e=>setComment(e.target.value)} />
-								<button className={ip("send-submit")}>Оформить заказ</button>					
-							</div>	
+						<ExpandSection visible={hard || soft } noPaddingBottom={true}>
+							<button className={ip("button")} onClick={()=>setShowModal(true)} >Оформить заказ</button>		
 						</ExpandSection>
-
 				</div>
 			</main>
 		</div>

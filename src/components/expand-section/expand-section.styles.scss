@@ -4,7 +4,15 @@
 }
 
 .expand-section__recieve-inner{
-	padding-left: 1rem;
+	// padding-left: 1rem;
 	display: flex;
 	flex-direction: column;
+	padding-bottom: 1rem;
+}
+
+.expand-section__recieve-inner_noPaddingBottom{
+	// padding-left: 1rem;
+	display: flex;
+	flex-direction: column;
+	padding-bottom: 0px;
 }

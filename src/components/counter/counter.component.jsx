@@ -23,7 +23,7 @@ const Counter = ({value, onChange}) => {
   return(
     <div className={cn()}>
       <button className={cn("button")} onClick={minusOne}>–</button>
-      <input type="text" name="name" value={value} onChange={e=>onChange(e.target.value)} />
+      <input className={cn("input")} type="text" name="name" value={value} onChange={e=>onChange(e.target.value)} />
       <button className={cn("button")} onClick={plusOne}>+</button>
     </div>
   )

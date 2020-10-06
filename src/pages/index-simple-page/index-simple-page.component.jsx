@@ -19,7 +19,7 @@ import photo from "../../assets/photo/photo.js";
 
 import lebedeva from "../../assets/photo/03_lebedeva.jpg";
 
-import cardData from "../../data/cards-poets.json";
+import cardData from "../../data/cards-poets.js";
 
 import ExpandSection from "../../components/expand-section/expand-section.component";
 import Counter from "../../components/counter/counter.component";

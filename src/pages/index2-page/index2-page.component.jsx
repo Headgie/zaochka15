@@ -2,16 +2,8 @@ import React, { useState, useLayoutEffect, Fragment, useRef } from "react";
 
 import block from "bem-cn";
 
-import vk from "../../assets/icons/vk-reproductor.svg";
-import fb from "../../assets/icons/facebook.svg";
-import email from "../../assets/icons/email.svg";
-import cart from "../../assets/icons/cart.svg";
-import menu from "../../assets/icons/menu.svg";
-import close from "../../assets/icons/close.svg";
+import book01 from "../../assets/photo/book01_resize.jpg";
 
-import book from "../../assets/photo/book.png";
-import book01 from "../../assets/photo/book01.jpg";
-import all from "../../assets/photo/all.png";
 
 import "./index2-page.styles.scss";
 

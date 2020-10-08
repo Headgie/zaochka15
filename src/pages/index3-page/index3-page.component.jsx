@@ -1,9 +1,9 @@
 import React, { useState, useLayoutEffect, Fragment, useRef } from "react";
 import { Carousel } from 'react-responsive-carousel';
 import  "react-responsive-carousel/lib/styles/carousel.min.css"
-import book01 from "../../assets/photo/book01.jpg";
-import book02 from "../../assets/photo/book02.jpg";
-import book03 from "../../assets/photo/book03.jpg";
+import book01 from "../../assets/photo/book01_resize.jpg";
+import book02 from "../../assets/photo/book02_resize.jpg";
+import book03 from "../../assets/photo/book03_resize.jpg";
 import block from "bem-cn";
 
 const Index3Page = (props) => {

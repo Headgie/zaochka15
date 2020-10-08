@@ -13,11 +13,10 @@ import closeIcon from "../../assets/icons/close.svg";
 import book01 from "../../assets/photo/book01_resize.jpg";
 import book02 from "../../assets/photo/book02_resize.jpg";
 import book03 from "../../assets/photo/book03_resize.jpg";
-import all from "../../assets/photo/all.png";
+import all from "../../assets/photo/all_resize.jpg";
 
 import photo from "../../assets/photo/photo.js";
 
-import lebedeva from "../../assets/photo/03_lebedeva.jpg";
 
 import cardData from "../../data/cards-poets.js";
 
@@ -26,12 +25,26 @@ import Counter from "../../components/counter/counter.component";
 import ImageFiller from "../../components/image-filler/image-filler.component";
 
 import "./index-simple-page.styles.scss";
+import { Form } from "react-bootstrap";
+
+const capitalize = (str, lower = false) =>
+  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+;
+
+const ADMIN_POCHTA = "vadim.a.matveev#at#gmail.com".replace("#at#", "@");
+
+const Mailto = ({ email, subject, body, children }) => {
+  return (
+    <a href={`mailto:${email}?subject=${encodeURIComponent(subject) || ''}&body=${encodeURIComponent(body) || ''}`}>{children}</a>
+  );
+};
 
 function CaptureResize(props) {
 	const {captureRef} = props;
 	const [size, setSize] = useState({});
 	const [initialSize, setInitialSize] = useState({});
 	const [initialHeight, setInitialHeight] = useState({});
+
   function updateSize() {
     setSize(captureRef.current.getBoundingClientRect());
 	}
@@ -47,6 +60,8 @@ function CaptureResize(props) {
 			};
 		
 		}, [initialHeight] );
+
+
 
   useLayoutEffect(() => {
 		console.log("uslayouteffect", size);
@@ -70,13 +85,11 @@ const IndexSimplePage = (props) => {
 	const [initialHeight, setInitialHeight] = useState();
 	const [initialWidth, setInitialWidth] = useState();
 	const buyRef = useRef(null);
-	const recieveRef = useRef(null);
-	const recieveRfPostRef = useRef(null);
+	const homeRef = useRef(null);
+
 	const [hard, setHard] = useState(false);
 	const [soft, setSoft] = useState(false);
 	const [recieve, setRecieve] = useState("self");
-	const [recieveStyle, setRecieveStyle] = useState({height: "0px"});
-	const [recieveInnerHeight, setRecieveInnerHeight] = useState(0);
   const [showModal, setShowModal] = useState(false)
 
 	const [index, setIndex] = useState("");
@@ -89,6 +102,41 @@ const IndexSimplePage = (props) => {
 	const [email, setEmail] = useState("");
 	const [phone, setPhone] = useState("");
 	const [comment, setComment] = useState("");
+
+	const arrLength = cardData.length;
+	const [elRefs, setElRefs] = React.useState([]);
+	
+	useEffect(() => {
+		// add or remove refs
+		setElRefs(elRefs => (    
+			Array(arrLength).fill().map((_, i) => elRefs[i] || React.createRef())
+		));
+	}, [arrLength]);
+
+ 	const handleMenuClick = (index) => {
+		scrollToRef(elRefs[index]);
+		setShowAuthorList(false);
+		
+	}
+
+  const getUserEmailText = () => 
+	(`Спасибо, ${userName}!#p
+	${hard && !soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
+	${!hard && soft?`Спасибо, вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
+	${hard && soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
+	и ее электронную версию в форматах epub, fb2.`:``}#p
+	
+	${hard && recieve==="rfPost" ?
+	`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
+	ФИО получателя:#n${fio}#p`
+	:
+	``
+	}
+	Комментарий к заказу: ${comment}#p
+	Ожидайте письма на указанный e-mail:${email}#p
+	`)
+
+
 
 	return (
 		<Fragment>
@@ -113,23 +161,28 @@ const IndexSimplePage = (props) => {
 			style={showModal?{height:`${height}px`}:{height:`0px`}} >
 			<div className={ip("modal-dialog-content")}
 			style={{minHeight:`calc( ${height}px - 0rem)`, maxHeight: `calc( ${height}px - 0rem)`}}>
-			<p>
-			{`Спасибо, ${userName}!
-			Вы заказали "Зачетную книжку": ${hard?`печатную (${count} экз)`:``} ${hard && soft?` и `: ``} ${soft?`электронную`:``}.
-			
-			Адрес почтовой доставки: 111123, Якутск, ул. Ивановская, д.5, кв. 15
-			ФИО получателя: Иванов Иван Иванович
-			
-			Ожидайте письма на указанный e-mail: user@domen.ru 
-			Если у вас возникли вопросы или письмо долго не приходит, обращайтесь: `}
-			</p>
+			<div  className={ip("modal-dialog-text-wrapper")}>
+				<div  className={ip("modal-dialog-text")}>
+					{getUserEmailText().split('#p').map(line => 
+						<p>{
+						line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
+						}</p>
+						)} 
+						<p>
+							Если у вас возникли вопросы или письмо долго не приходит, обращайтесь: &nbsp;
+							<Mailto email={ADMIN_POCHTA} subject="Информация по заказу «Зачетной книжки»" body="">
+							{ADMIN_POCHTA}
+							</Mailto>
+						</p>
+				</div>
+			</div>
 			<button className={ip("button")} onClick={()=>setShowModal(false)}>OK</button>
 			</div>
 			
 		</div>
 		<div className={ip({showAuthorList: showAuthorList})}>
 			<header role="banner" className="bg-light">
-				<div className={ip("brand")}>Зачётная книжка
+				<div className={ip("brand")}><span onClick={()=>scrollToRef(homeRef)}>Зачётная книжка</span>
 					<div className={ip("menu-button",{pressed:showAuthorList })} onClick={()=>setShowAuthorList(!showAuthorList)}>
 						{showAuthorList?
 							<img src={closeIcon} width="26"  height="26" alt="Close"  /> :
@@ -141,7 +194,10 @@ const IndexSimplePage = (props) => {
 				//style={{minHeight: showAuthorList?height:"0px", maxHeight: showAuthorList?height:"0px"}} 
 				>
 					<div className={ip("menu-authors")} style={{minHeight:`calc( ${height}px - 4rem)`, maxHeight: `calc( ${height}px - 4rem)`}} >
-						<div className={ip("menu-author")}>Елена Борок</div>
+						{cardData.map((item, index) => 
+							<div className={ip("menu-author")} onClick={()=>handleMenuClick(index)}>{capitalize(item.name.toLowerCase())}</div>
+							)}
+{/*						<div className={ip("menu-author")}>Елена Борок</div>
 						<div className={ip("menu-author")}> Катерина Корнеенкова</div>
 						<div className={ip("menu-author")}>Дарья Лебедева</div>
 						<div className={ip("menu-author")}>Валерия Ободзинская</div>
@@ -150,18 +206,20 @@ const IndexSimplePage = (props) => {
 						<div className={ip("menu-author")}>Татьяна Скрундзь</div>
 						<div className={ip("menu-author")}>Валерия Хаддадин</div>
 						<div className={ip("menu-author")}>Диана Чуяшева</div>
-						<div className={ip("menu-author")}>Варвара Юшманова</div>
+						<div className={ip("menu-author")}>Варвара Юшманова</div>*/}
 					</div>
 				</div>
 				<nav>
 					<ul>
 						<li>
-							<div className={ip("navbar-button")}>
+							<div className={ip("navbar-button")}  onClick={()=> window.open(`https://vk.com/zachetnaya_knizhka`, "_blank")}>
 								<img src={vkIcon} width="28"  height="28" alt="VK"  />
 							</div>
 						</li>
 						<li>
-							<a href="/about"><img src={fbIcon}  width="30"  height="30"  alt="FB" /></a>
+							<div className={ip("navbar-button")}  onClick={()=> window.open(`https://www.facebook.com/events/606944816662273/`, "_blank")}>
+								<img src={fbIcon}  width="30"  height="30"  alt="FB" />
+							</div>
 						</li>
 						<li>
 							<div className={ip("navbar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
@@ -170,7 +228,7 @@ const IndexSimplePage = (props) => {
 				</nav>
 			</header>
 			<main className={ip("main")}>
-				<div className={ip("carousel-section")}
+				<div className={ip("carousel-section")} ref={homeRef}
 					style={
 						{
 							minHeight:`${height-128}px`,
@@ -199,7 +257,8 @@ const IndexSimplePage = (props) => {
 						containerHeight={height-128} containerWidth={width} />
 						<ImageFiller 
 						image={book03} imageHeight={750} imageWidth={1000}
-						containerHeight={height-128} containerWidth={width} />								
+						containerHeight={height-128} containerWidth={width} />	
+											
 					</Carousel>
 				</div>
 
@@ -212,12 +271,15 @@ const IndexSimplePage = (props) => {
 						
 					</p>			
 				</div>
-
+				<div className={ip("section")}>
+					<img src={all} alt=""></img>
+				</div>
 				{cardData.map((card, index)=>(
 					<div key={card.id} className={ip("section")}
 						//style={{minHeight:`calc( ${height}px - 8rem)`, maxHeight: `calc( ${height}px - 8rem)`}}
 						>
-						<p><h2>{card.name}</h2></p>
+						<div ref={elRefs[index]} ></div>
+						<p><h2  >{card.name}</h2></p>
 						<div className={ip("card-bio-photo")}>
 							<div className={ip("card-photo")}>
 							<img src={
@@ -255,7 +317,9 @@ const IndexSimplePage = (props) => {
 
 					))
 				}
+
 				<div ref={buyRef} className={ip("section")} >
+					
 						<span  className={ip("h1")}>Заказать книгу </span>
 						<label className={ip("h2")}>
 							<input type="checkbox" className={ip("checkbox")} checked={hard} 
@@ -285,7 +349,7 @@ const IndexSimplePage = (props) => {
 								Доставка почтой России
 							</label>	
 							<div className={ip("comment")}>
-								При выборе этого варианта заказчик оплачивает почтовые расходы, но получает скидку на книгу в размере 100 рублей. Оплата наложенным платежом при получении на почте. 
+								Доставка включена в стоимость. 
 							</div>	
 						</ExpandSection>
 						
@@ -302,7 +366,7 @@ const IndexSimplePage = (props) => {
 							<div className={ip("send-rf-data")}>
 								<label className={ip("send-rf-data-label")}>
 									Ваше имя</label>
-									<input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
+									<input reqired type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
 										/>
 								<label className={ip("send-rf-data-label")}>
 									E-mail</label>
@@ -339,14 +403,20 @@ const IndexSimplePage = (props) => {
 								ФИО получателя	</label>	
 								<input type="text" name="name" value={fio} onChange={e=>setFio(e.target.value)} />
 						
-							<label className={ip("send-rf-data-label")}>
-								Количество книг в заказе</label>
-								<Counter value={count} onChange={setCount }/>
+
 							</div>															
 						</ExpandSection>
 						<ExpandSection visible={hard || soft } noPaddingBottom={true}>
-							<button className={ip("button")} onClick={()=>setShowModal(true)} >Оформить заказ</button>		
+						  <div className={ip("send-count")}>
+							<label className={ip("send-rf-data-label")}>
+								Количество книг в заказе</label>
+								<Counter value={count} onChange={setCount }/>			
+								</div>
 						</ExpandSection>
+						<ExpandSection visible={hard || soft } noPaddingBottom={true}>
+							<button className={ip("button")} onClick={(e)=>{ e.preventDefault(); setShowModal(true);}} >Оформить заказ</button>		
+						</ExpandSection>
+				
 				</div>
 			</main>
 		</div>

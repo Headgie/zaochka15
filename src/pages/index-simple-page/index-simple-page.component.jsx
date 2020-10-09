@@ -119,6 +119,41 @@ const IndexSimplePage = (props) => {
 		
 	}
 
+
+  const getUserConfirmText = () => 
+	(`Спасибо, ${userName}!#p
+	${hard && !soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
+	${!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
+	${hard && soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
+	и ее электронную версию в форматах epub, fb2.`:``}#p
+	
+	${hard && recieve==="rfPost" ?
+	`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
+	ФИО получателя:#n${fio}#p`
+	:
+	``
+	}
+	Комментарий к заказу: ${comment}#p
+	Ожидайте письма на указанный e-mail:${email}#p
+	`)	
+
+  const sendMail = async () => {
+		let sendForm = new FormData();
+		sendForm.append("to", ADMIN_POCHTA);
+		sendForm.append("subject", `Заказ Зачетной книжки`);
+		sendForm.append("message", getUserEmailText());
+
+		let response = await fetch('/zaochka15/go_send.php', {
+      method: 'POST',
+      body: sendForm
+    });
+
+    let result = await response.json();
+
+    alert(result.message);
+
+	}
+
   const getUserEmailText = () => 
 	(`Спасибо, ${userName}!#p
 	${hard && !soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
@@ -136,6 +171,22 @@ const IndexSimplePage = (props) => {
 	Ожидайте письма на указанный e-mail:${email}#p
 	`)
 
+	const getAdminEmailText = () => 
+	(`Спасибо, ${userName}!#p
+	${hard && !soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
+	${!hard && soft?`Спасибо, вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
+	${hard && soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
+	и ее электронную версию в форматах epub, fb2.`:``}#p
+	
+	${hard && recieve==="rfPost" ?
+	`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
+	ФИО получателя:#n${fio}#p`
+	:
+	``
+	}
+	Комментарий к заказу: ${comment}#p
+	Ожидайте письма на указанный e-mail:${email}#p
+	`)
 
 
 	return (
@@ -197,16 +248,6 @@ const IndexSimplePage = (props) => {
 						{cardData.map((item, index) => 
 							<div className={ip("menu-author")} onClick={()=>handleMenuClick(index)}>{capitalize(item.name.toLowerCase())}</div>
 							)}
-{/*						<div className={ip("menu-author")}>Елена Борок</div>
-						<div className={ip("menu-author")}> Катерина Корнеенкова</div>
-						<div className={ip("menu-author")}>Дарья Лебедева</div>
-						<div className={ip("menu-author")}>Валерия Ободзинская</div>
-						<div className={ip("menu-author")}>Дарья Пиотровская</div>
-						<div className={ip("menu-author")}>Павел Пушкарёв</div>
-						<div className={ip("menu-author")}>Татьяна Скрундзь</div>
-						<div className={ip("menu-author")}>Валерия Хаддадин</div>
-						<div className={ip("menu-author")}>Диана Чуяшева</div>
-						<div className={ip("menu-author")}>Варвара Юшманова</div>*/}
 					</div>
 				</div>
 				<nav>
@@ -414,7 +455,7 @@ const IndexSimplePage = (props) => {
 								</div>
 						</ExpandSection>
 						<ExpandSection visible={hard || soft } noPaddingBottom={true}>
-							<button className={ip("button")} onClick={(e)=>{ e.preventDefault(); setShowModal(true);}} >Оформить заказ</button>		
+							<button className={ip("button")} onClick={(e)=>{ e.preventDefault(); setShowModal(true); sendMail();}} >Оформить заказ</button>		
 						</ExpandSection>
 				
 				</div>

@@ -151,17 +151,20 @@ const IndexSimplePage = (props) => {
 	`)	
 
   const readAdminEmail = async () => {
-	let adminEmail = ""; 
-	fetch('settings.json').then(response => {
-		        response.json().then(settings => {
-					adminEmail = `${settings.admin_username}@${settings.admin_at}`;
-				}) 
-			})
-    return adminEmail;
+
+	fetch('/zaochka15/settings.json').then(response => {
+		response.json().then(settings => {
+			console.log("in acync",`${settings.admin_username}@${settings.admin_at}` );
+			return `${settings.admin_username}@${settings.admin_at}`;
+		}) 
+	})
+    
   }
   const sendMail = async () => {
-		  let adminEmail = await readAdminEmail(); 
-		  console.log("adminEmail", adminEmail);
+	   let adminEmail = "";
+	     console.log("before async adminEmail", adminEmail);
+		   adminEmail = await readAdminEmail(); 
+		  console.log("after async adminEmail", adminEmail);
 		let sendForm = new FormData();
 		sendForm.append("to", adminEmail);
 		sendForm.append("subject", `Заказ Зачетной книжки`);

@@ -31,7 +31,7 @@ const capitalize = (str, lower = false) =>
   (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 ;
 
-const ADMIN_POCHTA = "vadim.a.matveev#at#gmail.com".replace("#at#", "@");
+
 
 const Mailto = ({ email, subject, body, children }) => {
   return (
@@ -90,7 +90,7 @@ const IndexSimplePage = (props) => {
 	const [hard, setHard] = useState(false);
 	const [soft, setSoft] = useState(false);
 	const [recieve, setRecieve] = useState("self");
-  const [showModal, setShowModal] = useState(false)
+  	const [showModal, setShowModal] = useState(false)
 
 	const [index, setIndex] = useState("");
 	const [city, setCity] = useState("");
@@ -106,6 +106,19 @@ const IndexSimplePage = (props) => {
 	const arrLength = cardData.length;
 	const [elRefs, setElRefs] = React.useState([]);
 	
+	// const [state, setState] = useState({settings: null});
+	// const [adminEmail, setAdminEmail] = useState("");
+    // useEffect(()=>{
+    //     fetch('settings.json').then(response => {
+    //         response.json().then(settings => {
+    //             // instead of setting state you can use it any other way
+	// 			setState({settings: settings});
+	// 			setAdminEmail(`${settings.admin_username}@${settings.admin_at}`);
+	// 			console.log(state, adminEmail);
+    //         })
+    //     })
+    // }, [adminEmail])
+
 	useEffect(() => {
 		// add or remove refs
 		setElRefs(elRefs => (    
@@ -118,7 +131,7 @@ const IndexSimplePage = (props) => {
 		setShowAuthorList(false);
 		
 	}
-
+  
 
   const getUserConfirmText = () => 
 	(`Спасибо, ${userName}!#p
@@ -137,9 +150,20 @@ const IndexSimplePage = (props) => {
 	Ожидайте письма на указанный e-mail:${email}#p
 	`)	
 
+  const readAdminEmail = async () => {
+	let adminEmail = ""; 
+	fetch('settings.json').then(response => {
+		        response.json().then(settings => {
+					adminEmail = `${settings.admin_username}@${settings.admin_at}`;
+				}) 
+			})
+    return adminEmail;
+  }
   const sendMail = async () => {
+		  let adminEmail = await readAdminEmail(); 
+		  console.log("adminEmail", adminEmail);
 		let sendForm = new FormData();
-		sendForm.append("to", ADMIN_POCHTA);
+		sendForm.append("to", adminEmail);
 		sendForm.append("subject", `Заказ Зачетной книжки`);
 		sendForm.append("message", getUserEmailText());
 
@@ -150,7 +174,7 @@ const IndexSimplePage = (props) => {
 
     let result = await response.json();
 
-    alert(result.message);
+    console.log( "mail sent", result);
 
 	}
 
@@ -219,12 +243,12 @@ const IndexSimplePage = (props) => {
 						line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
 						}</p>
 						)} 
-						<p>
+						{/*<p>
 							Если у вас возникли вопросы или письмо долго не приходит, обращайтесь: &nbsp;
-							<Mailto email={ADMIN_POCHTA} subject="Информация по заказу «Зачетной книжки»" body="">
-							{ADMIN_POCHTA}
+							<Mailto email={adminEmail} subject="Информация по заказу «Зачетной книжки»" body="">
+							
 							</Mailto>
-						</p>
+						</p>*/}
 				</div>
 			</div>
 			<button className={ip("button")} onClick={()=>setShowModal(false)}>OK</button>

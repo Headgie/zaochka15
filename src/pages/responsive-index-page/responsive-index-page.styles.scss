@@ -1,0 +1,203 @@
+@import "../../styles/fonts.scss";
+
+
+/* Defuault styles:
+width: narrow,
+orientation: portrait, 
+update: slow,
+scan: interlace,
+monochrome: 1,
+pointer: coarse, 
+hover: none
+*/
+
+/* Creates large touch areas for finguers (coarse) */
+li a {
+  min-height: 4em;
+}
+
+/* Positions the navbar at the bottom for easy thumb access on small devices with portrait orientation */ 
+h1, nav{
+  position: fixed;
+  left: 0;
+  right: 0; 
+}
+
+h1 { 
+  box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+}
+
+nav {
+  box-shadow: 0 -4px 5px 0 rgba(0,0,0,.123);
+}
+/* Moves the main area to accomodate fixed header and navbar */
+main {
+  padding: 1em;
+  padding-bottom: 5em;
+  padding-top: 5em;
+
+}
+
+/* Mobile first: Accomodates the brand name on the left and the navigation on the right and it wraps without the need of width media queries */
+header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* Center aligns the brand name */
+h1 {
+  display: flex;
+  min-height: 2.5em;
+  align-items: center;
+  flex: 1 0 auto;
+  padding-left: 1em;
+  padding-right: 1em;
+}
+
+/* Flex items to make them streach */
+nav {
+  bottom: 0;
+  display: flex;
+  flex: 1 0 auto;
+}
+
+ul, li, li a {
+ display: flex;
+ flex: 1;
+}
+
+li a {
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding-left: 1em;
+  padding-right: 1em;
+  border-left: 1px solid black;
+}
+
+li:first-child a {
+  border: none;
+}
+
+
+.index-simple-page__navbar-button {
+	color: #ccc;
+  min-height: 4em;
+	flex: 1 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding-left: 1em;
+	padding-right: 1em;
+		
+}
+
+.index-simple-page__h1{
+	 font-family: 'PT Serif', serif;
+	//font-family: 'Open Sans Condensed', sans-serif;
+  font-size: 1.3rem;
+	// padding-bottom: 0.8rem;
+	font-weight: bold;
+}
+
+.index-simple-page__brand {
+	display: flex;
+  min-height: 4rem;
+  align-items: center;
+	flex: 1 0 auto;
+	justify-content: space-between;
+  padding-left: 1em;
+
+	background-color:#f8f9fa !important;
+	box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+	color: black;
+	font-family: 'PT Serif', serif;
+	font-size: 1.25rem;
+	font-weight: bold;
+	z-index: 50;
+
+	position: fixed;
+  left: 0;
+  right: 0; 
+}
+
+/* Detaches the fixed header and navbar for landscape viewports, fine pointers like a mouse and large screens */
+@media (orientation: landscape), (pointer: fine), (min-width: 45em) {
+  main {
+    padding-bottom: 1em;
+    padding-top: 1em;
+  }
+  h1, nav {
+    position: static;
+    box-shadow: none;
+  }
+  
+}
+
+/* Makes hit areas smaller for fine pointers like a mouse to gain viewport realestate */
+@media (pointer: fine) {
+  li a {
+    min-height: 2.5em;
+  }
+}
+
+
+/* Creates a vertical navigation on large landscape viewports */
+  @media (orientation: landscape) and (min-width: 45em) {
+  .container {
+    display: flex;
+  }
+
+  header {
+    display: block;
+    flex: 0 0 20%;
+  }
+    
+  header h1{
+    min-height: 6em;
+  }
+    
+  ul, li {
+    display: block;
+  }
+
+  li a, li:first-child a {
+    justify-content: start;
+    border-left: 0;
+    border-bottom: 1px solid black;
+  } 
+}
+
+/* Adds an animation on devices that are capable to render animations smoothly. Filters devices like Kindles, TVs, touch devices */
+@media (update: fast), (scan: progressive), (hover: hover) {
+  li a {
+    transition: all 0.3s ease-in-out;
+  }
+}
+
+/* Removes underlines on links for color screens */
+@media (color) {
+  li a { text-decoration: none; }
+}
+
+/* Increases borders to 2px on interlace screens like plasma TVs */
+@media (scan: interlace) {
+    li a, li:first-child a {
+    border-width: 2px;
+  }
+}
+
+/* General make up: colors, fonts, etc */
+html, body, .container { box-size: border-box; height: 100vh; }
+body { font-family: sans-serif; line-height: 1.5; }
+header { background-color:#f8f9fa ; color: black;
+	box-shadow: 0px 4px 5px 0px rgba(0, 0, 0, 0.123);
+	 }
+nav { background-color:#f8f9fa }
+h1 {  background-color:#f8f9fa ; color: black; font-weight: bold; font-family: 'PT Serif', serif; font-size: 1.2rem; }
+li a { color: #ccc; }
+li a:hover { background: #0000000e; color: black }
+h2, p { margin-bottom: 1em; }
+h2 {font-weight: 700; }
+

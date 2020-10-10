@@ -5,7 +5,6 @@ import block from "bem-cn";
 
 import vkIcon from "../../assets/icons/vk-reproductor.svg";
 import fbIcon from "../../assets/icons/facebook.svg";
-import emailIcon from "../../assets/icons/email.svg";
 import cartIcon from "../../assets/icons/cart.svg";
 import menuIcon from "../../assets/icons/menu.svg";
 import closeIcon from "../../assets/icons/close.svg";
@@ -25,19 +24,19 @@ import Counter from "../../components/counter/counter.component";
 import ImageFiller from "../../components/image-filler/image-filler.component";
 
 import "./index-simple-page.styles.scss";
-import { Form } from "react-bootstrap";
+
 
 const capitalize = (str, lower = false) =>
   (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
 ;
 
-const ADMIN_POCHTA = "vadim.a.matveev#at#gmail.com".replace("#at#", "@");
 
-const Mailto = ({ email, subject, body, children }) => {
-  return (
-    <a href={`mailto:${email}?subject=${encodeURIComponent(subject) || ''}&body=${encodeURIComponent(body) || ''}`}>{children}</a>
-  );
-};
+
+// const Mailto = ({ email, subject, body, children }) => {
+//   return (
+//     <a href={`mailto:${email}?subject=${encodeURIComponent(subject) || ''}&body=${encodeURIComponent(body) || ''}`}>{children}</a>
+//   );
+// };
 
 function CaptureResize(props) {
 	const {captureRef} = props;
@@ -90,7 +89,8 @@ const IndexSimplePage = (props) => {
 	const [hard, setHard] = useState(false);
 	const [soft, setSoft] = useState(false);
 	const [recieve, setRecieve] = useState("self");
-  const [showModal, setShowModal] = useState(false)
+	const [showModal, setShowModal] = useState(false);
+	const [sendSuccess, setSendSuccess] = useState(true);
 
 	const [index, setIndex] = useState("");
 	const [city, setCity] = useState("");
@@ -106,6 +106,20 @@ const IndexSimplePage = (props) => {
 	const arrLength = cardData.length;
 	const [elRefs, setElRefs] = React.useState([]);
 	
+	const [state, setState] = useState({settings: null});
+	const [adminEmail, setAdminEmail] = useState("");
+
+	useEffect(()=>{
+			fetch('/zaochka15/settings.json').then(response => {
+					response.json().then(settings => {
+							// instead of setting state you can use it any other way
+			setState({settings: settings});
+			setAdminEmail(`${settings.admin_username}@${settings.admin_at}`);
+			console.log(state, adminEmail);
+					})
+			})
+	}, [adminEmail])
+
 	useEffect(() => {
 		// add or remove refs
 		setElRefs(elRefs => (    
@@ -118,7 +132,7 @@ const IndexSimplePage = (props) => {
 		setShowAuthorList(false);
 		
 	}
-
+  
 
   const getUserConfirmText = () => 
 	(`Спасибо, ${userName}!#p
@@ -133,104 +147,142 @@ const IndexSimplePage = (props) => {
 	:
 	``
 	}
+	Контактный телефон: ${phone}#p
 	Комментарий к заказу: ${comment}#p
 	Ожидайте письма на указанный e-mail:${email}#p
 	`)	
 
+  const readAdminEmail = async () => {
+
+	fetch('/zaochka15/settings.json').then(response => {
+		response.json().then(settings => {
+			console.log("in acync",`${settings.admin_username}@${settings.admin_at}` );
+			return `${settings.admin_username}@${settings.admin_at}`;
+		}) 
+	})
+    
+  }
   const sendMail = async () => {
+		let message = getUserEmailText();
+		console.log(message);
 		let sendForm = new FormData();
-		sendForm.append("to", ADMIN_POCHTA);
-		sendForm.append("subject", `Заказ Зачетной книжки`);
-		sendForm.append("message", getUserEmailText());
+		sendForm.append("to", email);
+		sendForm.append("subject", `Заказ «Зачетной книжки»`);
+		sendForm.append("message", message);
 
 		let response = await fetch('/zaochka15/go_send.php', {
       method: 'POST',
       body: sendForm
-    });
+		});
+		 console.log( "user mail sent", response);
 
-    let result = await response.json();
+		if (response.ok) setSendSuccess(true)
+		else setSendSuccess(false);
 
-    alert(result.message);
+		const a = await resolveAfter2Seconds(20);
+		
+  	message = getAdminEmailText();
+		console.log(message);
+		sendForm = new FormData();
+		sendForm.append("to", adminEmail);
+		sendForm.append("subject", `Заказ «Зачетной книжки» от пользователя ${userName}`);
+		sendForm.append("message", message);
+
+		 response = await fetch('/zaochka15/go_send.php', {
+      method: 'POST',
+      body: sendForm
+		});  // let result = await response.json();
+
+    console.log( "admin mail sent", response);
 
 	}
 
   const getUserEmailText = () => 
-	(`Спасибо, ${userName}!#p
-	${hard && !soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
-	${!hard && soft?`Спасибо, вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
-	${hard && soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
-	и ее электронную версию в форматах epub, fb2.`:``}#p
-	
-	${hard && recieve==="rfPost" ?
-	`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
-	ФИО получателя:#n${fio}#p`
-	:
-	``
-	}
-	Комментарий к заказу: ${comment}#p
-	Ожидайте письма на указанный e-mail:${email}#p
-	`)
+	(`
+Спасибо, ${userName}!
+` +
+(hard && !soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».
+`:``) +
+(!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.
+`:``) +
+(hard && soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронную версию в форматах epub, fb2.
+`:``) +
+(hard && recieve==="rfPost" ?
+`Адрес почтовой доставки:
+${index}, ${city}, ${address}
+ФИО получателя: ${fio}
+`:``) +
+`Контактный телефон: ${phone}	
+Комментарий к заказу: ${comment}
+Если у вас возникли вопросы или письмо долго не приходит, обращайтесь ${adminEmail}`)	
 
-	const getAdminEmailText = () => 
-	(`Спасибо, ${userName}!#p
-	${hard && !soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
-	${!hard && soft?`Спасибо, вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
-	${hard && soft?`Спасибо, вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
-	и ее электронную версию в форматах epub, fb2.`:``}#p
-	
-	${hard && recieve==="rfPost" ?
-	`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
-	ФИО получателя:#n${fio}#p`
-	:
-	``
-	}
-	Комментарий к заказу: ${comment}#p
-	Ожидайте письма на указанный e-mail:${email}#p
-	`)
+function resolveAfter2Seconds(x) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(x);
+    }, 2000);
+  });
+}
 
-
+const getAdminEmailText = () => 
+(`Дорогой админ рассылки «Зачетной книжки».
+Пришел заказ от пользователя по имени ${userName}.
+` +
+(hard && !soft?`Было заказано ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».
+`:``) +
+(!hard && soft?`Была заказана электронная версия «Зачетной книжки» в форматах epub, fb2.
+`:``) +
+(hard && soft?`Было заказано ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронная версия в форматах epub, fb2.
+`:``) +
+(hard && recieve==="rfPost" ?
+`Адрес почтовой доставки:
+${index}, ${city}, ${address}
+ФИО получателя: ${fio}
+`:``) +
+`Комментарий к заказу: ${comment}
+Контакт через почту ${email} и телефон ${phone}`)	
 	return (
 		<Fragment>
 
 			<CaptureResize captureRef={c}>
-			{(initialSize, size) =>{
-				
-				setHeight(size.height);
-				setWidth(size.width);
-				setInitialHeight(initialSize.height);
-				setInitialWidth(initialSize.width);
+				{(initialSize, size) =>{
+					
+					setHeight(size.height);
+					setWidth(size.width);
+					setInitialHeight(initialSize.height);
+					setInitialWidth(initialSize.width);
 
-				// console.log(size.height);
-				return    (
-				<React.Fragment>
-				<div ref={c} className={ip("height-listener")}></div>
-			</React.Fragment>)}
-		}
-		
+					// console.log(size.height);
+					return    (
+					<React.Fragment>
+					<div ref={c} className={ip("height-listener")}></div>
+				</React.Fragment>)}
+			}
 		</CaptureResize>
+		
 		<div className={ip("modal-dialog", {visible: showModal})} 
 			style={showModal?{height:`${height}px`}:{height:`0px`}} >
 			<div className={ip("modal-dialog-content")}
 			style={{minHeight:`calc( ${height}px - 0rem)`, maxHeight: `calc( ${height}px - 0rem)`}}>
 			<div  className={ip("modal-dialog-text-wrapper")}>
 				<div  className={ip("modal-dialog-text")}>
-					{getUserEmailText().split('#p').map(line => 
+					{sendSuccess?
+						getUserConfirmText().split('#p').map(line => 
 						<p>{
 						line.split('#n').map(line => <Fragment>{line}<br/></Fragment>)
 						}</p>
-						)} 
-						<p>
-							Если у вас возникли вопросы или письмо долго не приходит, обращайтесь: &nbsp;
-							<Mailto email={ADMIN_POCHTA} subject="Информация по заказу «Зачетной книжки»" body="">
-							{ADMIN_POCHTA}
-							</Mailto>
+						)
+						:
+						<p style={{textAlign: "center"}}>
+							Опачки! Что-то пошло не так. 
 						</p>
+					} 
 				</div>
 			</div>
 			<button className={ip("button")} onClick={()=>setShowModal(false)}>OK</button>
 			</div>
-			
 		</div>
+
 		<div className={ip({showAuthorList: showAuthorList})}>
 			<header role="banner" className="bg-light">
 				<div className={ip("brand")}><span onClick={()=>scrollToRef(homeRef)}>Зачётная книжка</span>
@@ -241,6 +293,7 @@ const IndexSimplePage = (props) => {
 						}
 					</div>
 				</div>
+				
 				<div className={ip("slide", {visible: showAuthorList})} 
 				//style={{minHeight: showAuthorList?height:"0px", maxHeight: showAuthorList?height:"0px"}} 
 				>
@@ -250,6 +303,7 @@ const IndexSimplePage = (props) => {
 							)}
 					</div>
 				</div>
+
 				<nav>
 					<ul>
 						<li>
@@ -407,7 +461,7 @@ const IndexSimplePage = (props) => {
 							<div className={ip("send-rf-data")}>
 								<label className={ip("send-rf-data-label")}>
 									Ваше имя</label>
-									<input reqired type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
+									<input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
 										/>
 								<label className={ip("send-rf-data-label")}>
 									E-mail</label>
@@ -455,7 +509,12 @@ const IndexSimplePage = (props) => {
 								</div>
 						</ExpandSection>
 						<ExpandSection visible={hard || soft } noPaddingBottom={true}>
-							<button className={ip("button")} onClick={(e)=>{ e.preventDefault(); setShowModal(true); sendMail();}} >Оформить заказ</button>		
+							<button className={ip("button")} 
+								onClick={(e)=>{ 
+									e.preventDefault(); 
+									sendMail();
+									setShowModal(true); 
+								}} >Оформить заказ</button>		
 						</ExpandSection>
 				
 				</div>

@@ -18,7 +18,11 @@ import all from "../../assets/photo/all_resize.jpg";
 import photo from "../../assets/photo/photo.js";
 import cardData from "../../data/cards-poets.js";
 
+import { useScrollPosition } from '@n8tb1t/use-scroll-position'
+
+
 import useWindowSize from "../../utils/useWindowSize";
+
 
 const scrollToRef = (ref) =>{window.scrollTo(0, ref.current.offsetTop-64) ;} 
 
@@ -38,7 +42,8 @@ const ResponsiveIndexPage = (props) => {
   });
 
   
-  const {height, width } = useWindowSize();
+  // const {height, width } = useWindowSize();
+ 
  
 
  	useEffect(() => {
@@ -48,34 +53,49 @@ const ResponsiveIndexPage = (props) => {
 		));
 	}, [arrLength]);
 
+  const [hideOnScroll, setHideOnScroll] = useState(true)
+
+  useScrollPosition(
+    ({ prevPos, currPos }) => {
+      const isShow = currPos.y > prevPos.y
+      console.log (currPos.y);
+      if(currPos.y>-128) setHideOnScroll(true)
+      else 
+      if (isShow !== hideOnScroll ) setHideOnScroll(isShow)
+    },
+    [hideOnScroll],
+    false,
+    false,
+    300
+  )
+ 
 
   //const ip = block("responsive-index-page");
   const ip = block("responsive-index-page");
   return (
     <div className={ip()}>
-      <div className={ip("header")}>
+      <div className={ip("header", {show: hideOnScroll })}>
         <div className={ip("header-conatiner")}>
           <div className={ip("header-caption")}>
             <div className={ip("header-caption-inner")}>
               Зачётная книжка        
             </div>
           </div>
-          <div className={ip("buttons-bar")}>
-
-{   /*         <div className={ip("bar-button")}  onClick={()=> window.open(`https://vk.com/zachetnaya_knizhka`, "_blank")}>
+          <div className={ip("buttons-bar", {show: hideOnScroll })}>
+            <div className={ip("bar-button")}  onClick={()=> window.open(`https://vk.com/zachetnaya_knizhka`, "_blank")}>
               <img src={vkIcon} width="28"  height="28" alt="VK"  />
             </div>
             <div className={ip("bar-button")}  onClick={()=> window.open(`https://www.facebook.com/events/606944816662273/`, "_blank")}>
               <img src={fbIcon}  width="30"  height="30"  alt="FB" />
             </div>
-  */}
             <div className={ip("bar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
           </div>
         </div>
       </div>
+      
       <div className={ip("main")}>
 
-
+{/*
       <div className={ip("carousel-section")} ref={homeRef}
 					style={
 						{
@@ -86,12 +106,12 @@ const ResponsiveIndexPage = (props) => {
 						}}			
 					>
 					<Carousel
-						/*
-					infiniteLoop={false}
-					showIndicators={false}
-					autoPlay={false}
-					swipeable={false}
-					dynamicHeight={false}*/
+						
+					// infiniteLoop={false}
+					// showIndicators={false}
+					// autoPlay={false}
+					// swipeable={false}
+					// dynamicHeight={false}
 					
 					autoPlay={true}
 					infiniteLoop={true}
@@ -112,6 +132,7 @@ const ResponsiveIndexPage = (props) => {
 					</Carousel>
 				</div>
 
+          */ }
         {cardData.map((card, index)=>(
           <div key={card.id} className={ip("main-section")}>
             <div ref={elRefs[index]} ></div>

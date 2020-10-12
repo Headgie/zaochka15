@@ -23,6 +23,11 @@ import { useScrollPosition } from '@n8tb1t/use-scroll-position'
 
 import useWindowSize from "../../utils/useWindowSize";
 
+const capitalize = (str, lower = false) =>
+  (lower ? str.toLowerCase() : str).replace(/(?:^|\s|["'([{])+\S/g, match => match.toUpperCase());
+;
+
+
 
 const scrollToRef = (ref) =>{window.scrollTo(0, ref.current.offsetTop-64) ;} 
 
@@ -33,6 +38,7 @@ const ResponsiveIndexPage = (props) => {
 
   const arrLength = cardData.length;
   const [elRefs, setElRefs] = React.useState([]);
+  const [showAuthorList, setShowAuthorList] = useState(false);
 
  
  
@@ -42,7 +48,7 @@ const ResponsiveIndexPage = (props) => {
   });
 
   
-  // const {height, width } = useWindowSize();
+   const {height, width } = useWindowSize();
  
  
 
@@ -69,18 +75,47 @@ const ResponsiveIndexPage = (props) => {
     300
   )
  
-
+  const handleMenuClick = (index) => {
+		scrollToRef(elRefs[index]);
+    setShowAuthorList(false);
+    setHideOnScroll(true);
+		
+	}
   //const ip = block("responsive-index-page");
   const ip = block("responsive-index-page");
   return (
     <div className={ip()}>
+  
       <div className={ip("header", {show: hideOnScroll })}>
+
+
         <div className={ip("header-conatiner")}>
-          <div className={ip("header-caption")}>
-            <div className={ip("header-caption-inner")}>
+
+          <div className={ip("header-caption", {show: hideOnScroll })}>
+                     <div className={ip("menu-button",{pressed:showAuthorList })} onClick={()=>setShowAuthorList(!showAuthorList)}>
+            {showAuthorList?
+              <img src={closeIcon} width="28"  height="28" alt="Close"  /> :
+              <img src={menuIcon} width="28"  height="28" alt="Menu"  />
+            }
+          </div>
+           <div className={ip("header-caption-inner")}>
               Зачётная книжка        
             </div>
           </div>
+
+          <div className={ip("slide", {visible: showAuthorList})} 
+            //style={{minHeight: showAuthorList?height:"0px", maxHeight: showAuthorList?height:"0px"}} 
+          >
+            <div className={ip("menu-authors")} style={{minHeight:`calc( ${height}px - 4rem)`, maxHeight: `calc( ${height}px - 4rem)`}} >
+              {cardData.map((item, index) => 
+                <div className={ip("menu-author")} onClick={()=>handleMenuClick(index)}>{capitalize(item.name.toLowerCase())}</div>
+                )}
+            </div>
+          </div>    
+
+
+
+
           <div className={ip("buttons-bar", {show: hideOnScroll })}>
             <div className={ip("bar-button")}  onClick={()=> window.open(`https://vk.com/zachetnaya_knizhka`, "_blank")}>
               <img src={vkIcon} width="28"  height="28" alt="VK"  />
@@ -89,8 +124,10 @@ const ResponsiveIndexPage = (props) => {
               <img src={fbIcon}  width="30"  height="30"  alt="FB" />
             </div>
             <div className={ip("bar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
-          </div>
+          </div> 
         </div>
+
+
       </div>
       
       <div className={ip("main")}>

@@ -89,7 +89,7 @@ const IndexSimplePage = (props) => {
 	const [hard, setHard] = useState(false);
 	const [soft, setSoft] = useState(false);
 	const [recieve, setRecieve] = useState("self");
-	const [showModal, setShowModal] = useState(false);
+	const [showModal, setShowModal] = useState(true);
 	const [sendSuccess, setSendSuccess] = useState(true);
 
 	const [index, setIndex] = useState("");
@@ -103,22 +103,15 @@ const IndexSimplePage = (props) => {
 	const [phone, setPhone] = useState("");
 	const [comment, setComment] = useState("");
 
-	const arrLength = cardData.length;
-	const [elRefs, setElRefs] = React.useState([]);
-	
 	const [state, setState] = useState({settings: null});
 	const [adminEmail, setAdminEmail] = useState("");
 
-	useEffect(()=>{
-			fetch('/zaochka15/settings.json').then(response => {
-					response.json().then(settings => {
-							// instead of setting state you can use it any other way
-			setState({settings: settings});
-			setAdminEmail(`${settings.admin_username}@${settings.admin_at}`);
-			console.log(state, adminEmail);
-					})
-			})
-	}, [adminEmail])
+	const arrLength = cardData.length;
+	const [elRefs, setElRefs] = React.useState([]);
+	
+
+
+
 
 	useEffect(() => {
 		// add or remove refs
@@ -132,7 +125,17 @@ const IndexSimplePage = (props) => {
 		setShowAuthorList(false);
 		
 	}
-  
+
+  useEffect(()=>{
+			fetch('/zaochka15/settings.json').then(response => {
+					response.json().then(settings => {
+							// instead of setting state you can use it any other way
+			setState({settings: settings});
+			setAdminEmail(`${settings.admin_username}@${settings.admin_at}`);
+			console.log(state, adminEmail);
+					})
+			})
+	}, [adminEmail])
 
   const getUserConfirmText = () => 
 	(`Спасибо, ${userName}!#p
@@ -241,7 +244,8 @@ ${index}, ${city}, ${address}
 `:``) +
 `Комментарий к заказу: ${comment}
 Контакт через почту ${email} и телефон ${phone}`)	
-	return (
+
+return (
 		<Fragment>
 
 			<CaptureResize captureRef={c}>

@@ -66,7 +66,7 @@ function CaptureResize(props) {
   return props.children(initialSize,size)
 }
 
-const scrollToRef = (ref) =>{window.scrollTo(0, ref.current.offsetTop-64) ;} 
+
 
 const ResponsiveIndexPage = (props) => {
   const buyRef = useRef(null);
@@ -77,12 +77,18 @@ const ResponsiveIndexPage = (props) => {
   const [elRefs, setElRefs] = React.useState([]);
   const [showAuthorList, setShowAuthorList] = useState(false);
 
-  const [height, setHeight] = useState();
-  const [width, setWidth] = useState();
+  const [height, setHeight] = useState(0);
+  const [width, setWidth] = useState(0);
   
   const isComp = useMediaQuery({
-    query: 'only screen and (min-device-width : 1024px) and (orientation : landscape)'
+    query: 'only screen and (min-device-width : 1025px) and (orientation : landscape)'
   })
+
+  const isPad = useMediaQuery({
+    query: '@media (orientation: landscape), (pointer: fine), (min-width: 45em)'
+  })
+
+  const scrollToRef = (ref) =>{window.scrollTo(0, ref.current.offsetTop-(isComp?0:isPad?72:36)) ;} 
 
   const [windowSize, setWindowSize] = React.useState({
     width:  document.body.clientWidth, //window.innerWidth,
@@ -131,9 +137,15 @@ const ResponsiveIndexPage = (props) => {
     <Fragment>
 			<CaptureResize captureRef={c}>
 				{(initialSize, size) =>{
-					
-					setHeight(size.height);
-					setWidth(size.width);
+          if (isComp===false){
+            if ( Math.abs(height-size.height) > 80)	setHeight(size.height);
+            if ( Math.abs(width-size.width) > 80) setWidth(size.width);
+          }
+          else
+          {
+            	setHeight(size.height);
+            setWidth(size.width);
+          }
 				/*	setInitialHeight(initialSize.height);
 					setInitialWidth(initialSize.width);*/
 
@@ -166,15 +178,15 @@ const ResponsiveIndexPage = (props) => {
                 <img src={menuIcon} width="28"  height="28" alt="Menu"  />
               }
             </div>
-           <div className={ip("header-caption-inner")}>
+           <div className={ip("header-caption-inner")} onClick={()=>scrollToRef(homeRef)}>
               Зачётная книжка        
             </div>
           </div>
 
           <div className={ip("slide", {visible: showAuthorList})} 
-            style={{minHeight: (showAuthorList || isComp) ?`${height+(isComp?-72:72)}px`:"0px", maxHeight: (showAuthorList || isComp)?`${height+(isComp?-72:72)}px`:"0px"}} 
+            style={{minHeight: (showAuthorList || isComp) ?`${height+(isComp?-120:isPad?0:72)}px`:"0px", maxHeight: (showAuthorList || isComp)?`${height+(isComp?-120:isPad?0:72)}px`:"0px"}} 
           >
-            <div className={ip("menu-authors")} style={{minHeight:`${height+(isComp?-72:72)}px`, maxHeight: `${height+(isComp?-72:72)}px`}} >
+            <div className={ip("menu-authors")} style={{minHeight:`${height+(isComp?-120:isPad?0:72)}px`, maxHeight: `${height+(isComp?-120:isPad?0:72)}px`}} >
               {cardData.map((item, index) => 
                 <div className={ip("menu-author")} onClick={()=>handleMenuClick(index)}>{capitalize(item.name.toLowerCase())}</div>
                 )}
@@ -191,22 +203,16 @@ const ResponsiveIndexPage = (props) => {
             <div className={ip("bar-button")}  onClick={()=> window.open(`https://www.facebook.com/events/606944816662273/`, "_blank")}>
               <img src={fbIcon}  width="30"  height="30"  alt="FB" />
             </div>
-            <div className={ip("bar-button")} onClick={()=>scrollToRef(buyRef)}><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
+            <div className={ip("bar-button")} 
+              //onClick={()=>scrollToRef(buyRef)}
+              ><img src={cartIcon}  width="30"  height="30" alt="Buy" /></div>
           </div> 
         </div>
 
 
       </div>
-
-
-     
       <div className={ip("main",  {show: hideOnScroll })}>
-{ /*      <ImageFiller 
-						image={book01} imageHeight={667} imageWidth={1000}
-            containerHeight={height} containerWidth={width} />
-*/ }  
-
-      <div className={ip("carousel-section")} ref={homeRef}
+        <div className={ip("carousel-section")} ref={homeRef}
 					style={
 						{
 							minHeight:`${height}px`,
@@ -297,6 +303,9 @@ const ResponsiveIndexPage = (props) => {
           ))
         }
 
+
+
+        
       </div>
     </div>
   

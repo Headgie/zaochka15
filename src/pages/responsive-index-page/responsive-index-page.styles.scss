@@ -75,7 +75,7 @@ html {
 //   top:  0;
 // }
 .responsive-index-page__header-conatiner {
-  max-width: 1440px;
+  // max-width: 1440px;
   margin: 0 auto;
   flex: 1;
   display: flex;
@@ -163,7 +163,8 @@ html {
 .responsive-index-page__menu-authors {
 
 	transition: all 0.25s ease-in-out;
-	background-color: whitesmoke;
+  background-color: whitesmoke;
+  
 	color: black;
 
 	padding: 0px 0px;
@@ -178,7 +179,7 @@ html {
 	z-index: 20;
 	position: absolute;
   bottom: 0;
-  flex-wrap: wrap;
+  // flex-wrap: wrap;
 }
 
 
@@ -208,7 +209,7 @@ html {
 
 .responsive-index-page__menu-author {
 	flex: 0;
-	font-size: 1rem;
+	font-size: 1.2rem;
 	box-sizing: border-box;
 	padding-left: 1em;
 	padding-right: 1em;
@@ -226,7 +227,7 @@ html {
   
   font-family: 'Open Sans Condensed', sans-serif;
   font-size: 1.2rem;
-  max-width: 1440px;
+  // max-width: 1440px;
   margin: 0 auto;
 }
 
@@ -268,6 +269,7 @@ margin-top: 0;
   font-size: 1.6rem;
   font-weight: bold;
   padding-bottom: 1rem;
+  padding-top: 2rem;
 }
 
 .responsive-index-page__card-bio-photo {
@@ -407,7 +409,7 @@ and (max-device-width : 1024px) {
 
 //comp
 @media only screen 
-and (min-device-width : 1024px) 
+and (min-device-width : 1025px) 
 and (orientation : landscape)
 {
 
@@ -437,7 +439,7 @@ and (orientation : landscape)
   .responsive-index-page__height-listener {
     top: 0px;
     bottom: 0px;
-    left:  21vw ;
+    left:  20.1vw ;
   }
   .responsive-index-page__height-listener_show {
     top: 0rem;
@@ -445,7 +447,7 @@ and (orientation : landscape)
   }
 
   .responsive-index-page__main {
-    margin-left:  21vw ;
+    margin-left: 20.1vw ;
     margin-top: 0;
     padding-top: 0;    // flex: 1;
   }
@@ -505,5 +507,15 @@ and (orientation : landscape)
   
   .responsive-index-page__menu-button {
     display:none;
+  }
+  .responsive-index-page__header-caption-inner {
+    margin-top: 1rem;
+  }
+  .responsive-index-page__bar-button {
+    
+  }
+
+  .responsive-index-page__header {
+     padding-left: 0;
   }
 }

@@ -23,7 +23,7 @@ function App() {
         <Index4Page></Index4Page>
       </Route>  */}       
       
-      <Route exact path="/zaochka15">
+      <Route exact path="/">
         <ResponsiveIndexPage></ResponsiveIndexPage>
       </Route>              
     </Switch>

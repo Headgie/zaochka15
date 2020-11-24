@@ -151,7 +151,7 @@ const ResponsiveIndexPage = (props) => {
 		
 	}
   useEffect(()=>{
-    fetch('/zaochka15/settings.json').then(response => {
+    fetch('/settings.json').then(response => {
         response.json().then(settings => {
             // instead of setting state you can use it any other way
     setState({settings: settings});
@@ -164,9 +164,9 @@ const ResponsiveIndexPage = (props) => {
 const getUserConfirmText = () => 
 (`Спасибо, ${userName}!#p
 ${hard && !soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».`:``}
-${!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.`:``}
+${!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в формате epub.`:``}
 ${hard && soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» 
-и ее электронную версию в форматах epub, fb2.`:``}#p
+и ее электронную версию в формате epub.`:``}#p
 
 ${hard && recieve==="rfPost" ?
 `Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
@@ -181,7 +181,7 @@ ${hard && recieve==="rfPost" ?
 
 const readAdminEmail = async () => {
 
-fetch('/zaochka15/settings.json').then(response => {
+fetch('/settings.json').then(response => {
   response.json().then(settings => {
     console.log("in acync",`${settings.admin_username}@${settings.admin_at}` );
     return `${settings.admin_username}@${settings.admin_at}`;
@@ -197,7 +197,7 @@ const sendMail = async () => {
   sendForm.append("subject", `Заказ «Зачетной книжки»`);
   sendForm.append("message", message);
 
-  let response = await fetch('/zaochka15/go_send.php', {
+  let response = await fetch('/go_send.php', {
     method: 'POST',
     body: sendForm
   });
@@ -215,7 +215,7 @@ const sendMail = async () => {
   sendForm.append("subject", `Заказ «Зачетной книжки» от пользователя ${userName}`);
   sendForm.append("message", message);
 
-   response = await fetch('/zaochka15/go_send.php', {
+   response = await fetch('/go_send.php', {
     method: 'POST',
     body: sendForm
   });  // let result = await response.json();
@@ -230,9 +230,9 @@ const getUserEmailText = () =>
 ` +
 (hard && !soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».
 `:``) +
-(!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в форматах epub, fb2.
+(!hard && soft?`Вы заказали электронную версию «Зачетной книжки» в формате epub.
 `:``) +
-(hard && soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронную версию в форматах epub, fb2.
+(hard && soft?`Вы заказали ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронную версию в формате epub.
 `:``) +
 (hard && recieve==="rfPost" ?
 `Адрес почтовой доставки:
@@ -257,9 +257,9 @@ const getAdminEmailText = () =>
 ` +
 (hard && !soft?`Было заказано ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки».
 `:``) +
-(!hard && soft?`Была заказана электронная версия «Зачетной книжки» в форматах epub, fb2.
+(!hard && soft?`Была заказана электронная версия «Зачетной книжки» в формате epub.
 `:``) +
-(hard && soft?`Было заказано ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронная версия в форматах epub, fb2.
+(hard && soft?`Было заказано ${count} экземпляр${count===1?``:count===5?`ов`:`а`} «Зачетной книжки» и ее электронная версия в формате epub.
 `:``) +
 (hard && recieve==="rfPost" ?
 `Адрес почтовой доставки:
@@ -506,7 +506,7 @@ ${index}, ${city}, ${address}
       
       <label  className={ip("h2")}>
         <input type="checkbox" className={ip("checkbox")}  checked={soft} onChange={()=>{setSoft(!soft)} }/>
-        Электронная книга в форматах fb2, epub
+        Электронная книга в формате epub
       </label>
       <div className={ip("comment")}>
         Подходит для большинства программ для чтения электронных книг, таких как iBooks, iBouquiniste, Читай! Litres, Bookmate, ALReader, PocketBook Reader, FBReader и др. 

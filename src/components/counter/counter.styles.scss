@@ -37,5 +37,12 @@
   max-width: 3rem;
   min-width: 3rem;
   text-align: center;
-  height: 30px;
+  // height: 30px;
+  border: #333  1px solid;
+  border-radius: 2.5px;
+  background-color: white;
+}
+
+.counter__input:focus {
+  outline: #333333 auto 1px;
 }

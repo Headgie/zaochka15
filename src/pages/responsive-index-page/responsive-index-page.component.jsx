@@ -22,7 +22,8 @@ import photo from "../../assets/photo/photo.js";
 import cardData from "../../data/cards-poets.js";
 
 import { useScrollPosition } from '@n8tb1t/use-scroll-position'
-
+import { AddressSuggestions } from 'react-dadata';
+import './react-dadata.css';
 
 import useWindowSize from "../../utils/useWindowSize";
 
@@ -81,10 +82,10 @@ const ResponsiveIndexPage = (props) => {
 	const [sendSuccess, setSendSuccess] = useState(true);
 
 	const [index, setIndex] = useState("");
-	const [city, setCity] = useState("");
 	const [address, setAddress] = useState("");
 	const [fio, setFio] = useState("");
-	const [count, setCount] = useState(1);
+  const [count, setCount] = useState(1);
+  const [addressSuggest, setAddressSuggest] = useState();
 
 	const [userName, setUserName] = useState("");
 	const [email, setEmail] = useState("");
@@ -169,7 +170,7 @@ ${hard && soft?`Вы заказали ${count} экземпляр${count===1?``:
 и ее электронную версию в формате epub.`:``}#p
 
 ${hard && recieve==="rfPost" ?
-`Адрес почтовой доставки:#n ${index}, ${city}, ${address}#n
+`Адрес почтовой доставки:#n ${index}, ${address}#n
 ФИО получателя:#n${fio}#p`
 :
 ``
@@ -236,7 +237,7 @@ const getUserEmailText = () =>
 `:``) +
 (hard && recieve==="rfPost" ?
 `Адрес почтовой доставки:
-${index}, ${city}, ${address}
+${index}, ${address}
 ФИО получателя: ${fio}
 `:``) +
 `Контактный телефон: ${phone}	
@@ -263,7 +264,7 @@ const getAdminEmailText = () =>
 `:``) +
 (hard && recieve==="rfPost" ?
 `Адрес почтовой доставки:
-${index}, ${city}, ${address}
+${index}, ${address}
 ФИО получателя: ${fio}
 `:``) +
 `Комментарий к заказу: ${comment}
@@ -516,51 +517,56 @@ ${index}, ${city}, ${address}
         <div className={ip("send-rf-data")}>
           <label className={ip("send-rf-data-label")}>
             Ваше имя</label>
-            <input type="text" name="name" value={userName} onChange={e=>setUserName(e.target.value)} 
+            <input type="text" name="name" value={userName} className={ip("input")} onChange={e=>setUserName(e.target.value)} 
               />
           <label className={ip("send-rf-data-label")}>
             E-mail</label>
-            <input type="text" name="email" value={email} onChange={e=>setEmail(e.target.value)} />
+            <input type="text" name="email" value={email} className={ip("input")} onChange={e=>setEmail(e.target.value)} />
 
           <label className={ip("send-rf-data-label")}>
             Номер телефона</label>
-            <input type="text" name="phone" value={phone} onChange={e=>setPhone(e.target.value)} />
+            <input type="text" name="phone" value={phone} className={ip("input")} onChange={e=>setPhone(e.target.value)} />
 
           <label className={ip("send-rf-data-label")}>
             Комментарий</label>
-            <textarea className={ip("send-comment")} value={comment} onChange={e=>setComment(e.target.value)} />
+            <textarea className={ip("send-comment").mix(ip("input"))} value={comment}  onChange={e=>setComment(e.target.value)} />
 
         </div>	
       </ExpandSection>
-      <ExpandSection visible={hard && recieve==="rfPost" }>
+      <ExpandSection visible={hard && recieve==="rfPost" } combo={true}>
       <div className={ip("send-rf-data")}>
         <div className={ip("h2")}>Данные для получения посылки </div>
 
         <label className={ip("send-rf-data-label")}>
           Индекс</label>
-          <input type="text" name="name" value={index} onChange={e=>setIndex(e.target.value)} />
-        
-        <label className={ip("send-rf-data-label")}>
-          Населенный пункт</label>
-          <input type="text" name="name" value={city} onChange={e=>setCity(e.target.value)} />
+          <input type="text" name="name" value={index} className={ip("input")} onChange={e=>setIndex(e.target.value)} />
         
         <label className={ip("send-rf-data-label")}>
           Адрес
-          (улица, дом, квартира)</label>		
-          <input type="text" name="name" value={address} onChange={e=>setAddress(e.target.value)} />
-                  
+          (населенный пункт, улица, дом, квартира)</label>	
+        <div className={ip("address-suggestion",{invalid: true})}>	
+          <AddressSuggestions 
+            token="0f5003ac0434d81973e85820fc578a88230b640c" 
+            value={address} 
+            onChange={(e,a,b) => 
+              {
+                console.log(e);
+                setAddress(e.value);
+                setIndex(e.data.postal_code);
+            }}
+            count={5} />
+          </div>	
+          
         <label className={ip("send-rf-data-label")}>
           ФИО получателя	</label>	
-          <input type="text" name="name" value={fio} onChange={e=>setFio(e.target.value)} />
-      
-
+          <input type="text" name="name" value={fio} className={ip("input")} onChange={e=>setFio(e.target.value)} />
         </div>															
       </ExpandSection>
       <ExpandSection visible={hard || soft } noPaddingBottom={true}>
         <div className={ip("send-count")}>
         <label className={ip("send-rf-data-label")}>
           Количество книг в заказе</label>
-          <Counter value={count} onChange={setCount }/>			
+          <Counter value={count}  onChange={setCount }/>			
           </div>
       </ExpandSection>
       <ExpandSection visible={hard || soft } noPaddingBottom={true}>

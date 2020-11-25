@@ -19,7 +19,7 @@ const ExpandSection = (props) => {
 
   return (
 
-    <div className={es("recieve")} style={recieveStyle}>
+    <div className={es("recieve", {combo: props.combo===true &&  props.visible})} style={recieveStyle}>
       <div ref={recieveRef}  className={es("recieve-inner",{noPaddingBottom: props.noPaddingBottom})}>
         {props.children}
       </div>

@@ -103,6 +103,84 @@ const ResponsiveIndexPage = (props) => {
   const [height, setHeight] = useState(0);
   const [width, setWidth] = useState(0);
   
+  const [valid, setValid] = useState( [
+    {name: "index", valid: true, comment: ""},
+    {name: "address", valid: true, comment: ""},
+    {name: "fio", valid: false, comment: ""},
+    {name: "count", valid: true, comment: ""},
+    // {name: "addressSuggest", valid: true, comment: ""},
+    {name: "userName", valid: false, comment: "Введите имя"},
+    {name: "email", valid: true, comment: ""},
+    {name: "phone", valid: true, comment: ""},
+ 
+  ])
+
+  const getValid = (name) => {
+    const value = valid.find( obj => obj.name ===name ).valid;
+    console.log(name, value);
+    return (value)
+  }
+
+  const getInvalidComment = (name) => {
+    const validationObject = valid.find( obj => obj.name ===name );
+    if (!validationObject.valid) return validationObject.comment;
+    return "";
+  }
+
+  const checkValue = (obj) => {
+    switch(obj.name) {
+      case "index":
+        return index!==undefined && index!=="";
+        break;
+      case "address":
+        return address!==undefined && address!=="";
+        break;
+      case "fio":
+        return fio!==undefined && fio!=="";
+        break;
+      // case "count":
+      //   return count && count!=="";
+      //   break;
+      // case "addressSuggest":
+      //   return addressSuggest && addressSuggest!=="";
+      //   break;
+      case "userName":
+        return userName!==undefined && userName!=="";
+        break;
+      case "email":
+        return email!==undefined && email!=="";
+        break;
+      case "phone":
+        return phone!==undefined && phone!=="";
+        break;
+      default:
+        return true;
+        break;
+     }
+  }
+
+
+  const validateInput = () => {
+    console.log("validateInput")
+    let isValid = true;
+
+    const newValid = valid.map((obj) => {
+        const valid = checkValue(obj);
+        if (!valid && isValid) isValid=false;
+        return ({
+          ...obj,
+        valid: valid
+        
+        })
+      }
+      
+    )
+    console.log(isValid, newValid);
+    setValid(newValid);
+    return isValid;
+  }
+
+
   const isComp = useMediaQuery({
     query: 'only screen and (min-device-width : 1025px) and (orientation : landscape)'
   })
@@ -517,15 +595,16 @@ ${index}, ${address}
         <div className={ip("send-rf-data")}>
           <label className={ip("send-rf-data-label")}>
             Ваше имя</label>
-            <input type="text" name="name" value={userName} className={ip("input")} onChange={e=>setUserName(e.target.value)} 
+            <input type="text" name="name" value={userName} className={ip("input", {invalid: !getValid("userName")})} onChange={e=>setUserName(e.target.value)} 
               />
+            {!getValid("userName")?<label className={ip("invalid-comment")}>{getInvalidComment("userName")}</label>:null}
           <label className={ip("send-rf-data-label")}>
             E-mail</label>
-            <input type="text" name="email" value={email} className={ip("input")} onChange={e=>setEmail(e.target.value)} />
+            <input type="text" name="email" value={email} className={ip("input", {invalid: !valid.find( obj => obj.name ==="email" ).valid})} onChange={e=>setEmail(e.target.value)} />
 
           <label className={ip("send-rf-data-label")}>
             Номер телефона</label>
-            <input type="text" name="phone" value={phone} className={ip("input")} onChange={e=>setPhone(e.target.value)} />
+            <input type="text" name="phone" value={phone} className={ip("input", {invalid: !valid.find( obj => obj.name ==="phone" ).valid})} onChange={e=>setPhone(e.target.value)} />
 
           <label className={ip("send-rf-data-label")}>
             Комментарий</label>
@@ -539,12 +618,12 @@ ${index}, ${address}
 
         <label className={ip("send-rf-data-label")}>
           Индекс</label>
-          <input type="text" name="name" value={index} className={ip("input")} onChange={e=>setIndex(e.target.value)} />
+          <input type="text" name="index" value={index} className={ip("input", {invalid: !valid.find( obj => obj.name ==="index" ).valid})} onChange={e=>setIndex(e.target.value)} />
         
         <label className={ip("send-rf-data-label")}>
           Адрес
           (населенный пункт, улица, дом, квартира)</label>	
-        <div className={ip("address-suggestion",{invalid: true})}>	
+        <div className={ip("address-suggestion", {invalid: !getValid("address")})}>	
           <AddressSuggestions 
             token="0f5003ac0434d81973e85820fc578a88230b640c" 
             value={address} 
@@ -559,7 +638,7 @@ ${index}, ${address}
           
         <label className={ip("send-rf-data-label")}>
           ФИО получателя	</label>	
-          <input type="text" name="name" value={fio} className={ip("input")} onChange={e=>setFio(e.target.value)} />
+          <input type="text" name="name" value={fio} className={ip("input", {invalid: !valid.find( obj => obj.name ==="fio" ).valid})} onChange={e=>setFio(e.target.value)} />
         </div>															
       </ExpandSection>
       <ExpandSection visible={hard || soft } noPaddingBottom={true}>
@@ -573,8 +652,11 @@ ${index}, ${address}
         <button className={ip("button")} 
           onClick={(e)=>{ 
             e.preventDefault(); 
+
+            if (validateInput()) {
             sendMail();
             setShowModal(true); 
+            }
           }} >Оформить заказ</button>		
       </ExpandSection>
 

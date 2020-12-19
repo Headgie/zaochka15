@@ -68,6 +68,14 @@ html {
   background-color: rgba(255, 192, 203, 0.425);
 }
 
+.responsive-index-page__invalid-comment {
+  color: rgb(255, 51, 85);
+  font-style: italic;
+  font-size: 1.1rem;
+	font-family: 'Open Sans Condensed', sans-serif;
+	text-align: left;
+}
+
 .responsive-index-page__input:focus {
   outline: #333333 auto 1px;
 
